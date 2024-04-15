@@ -1,0 +1,28 @@
+body{
+    background-color: red;
+}
+
+.navbar{
+    font-family: "DM Sans", sans-serif;
+    font-size: 20px;
+    margin-right: 5px;
+}
+
+.navbar ul li {
+    margin-right: 30px;
+}
+
+main{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 10%;
+    font-family: "DM Sans", sans-serif;
+}
+
+main h1{
+    letter-spacing: 3px;
+    font-size: 100px;
+}
+
+

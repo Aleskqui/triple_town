@@ -118,7 +118,7 @@ while accueil == True:
                 y =  i * (case + 10)  # Calcul des coordonnées y
                 screen.blit(text, (x, y))
 
-        pygame.display.flip() # mise à jour de la pag
+        pygame.display.flip() # mise à jour de la page
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:

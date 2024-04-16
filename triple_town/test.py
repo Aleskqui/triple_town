@@ -125,7 +125,7 @@ while accueil == True:
                 running = False
 
             elif event.type == pygame.MOUSEBUTTONDOWN:
-                # On vérifie si on a cliqué sur le bouton retour
+                # On vérifie si on a cliqué sur le bouton retur
                 if pos_retour.collidepoint(event.pos):
                     print("retour")
                     running = False

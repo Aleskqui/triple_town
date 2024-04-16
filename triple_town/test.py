@@ -130,10 +130,12 @@ while accueil == True:
                     print("retour")
                     running = False
                     accueil = True
+                position_souris = pygame.mouse.get_pos()
+                case_x = position_souris[0] // case
+                case_y = position_souris[1] // case
+                if case_x!=6.0:
+                    print(f"Vous avez choisi la case ({case_x}, {case_y})")
 
 
     # Fermeture de la fenêtre    
     pygame.quit
-
-
-

@@ -25,4 +25,10 @@ main h1{
     font-size: 100px;
 }
 
+main section{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    width: 50%;
+}
 

@@ -111,7 +111,7 @@ while accueil == True:
         ]
 
         font = pygame.font.Font(None, 36)
-        case = 738/5  # Taille de chaque case
+        case = 738/6  # Taille de chaque case
         for i in range(len(grille)):
             for j in range(len(grille[i])):
                 text = font.render(str(grille[i][j]), True, (255, 255, 255))  # ecire les chiffres de la grilles

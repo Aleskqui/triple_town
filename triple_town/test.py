@@ -40,6 +40,7 @@ villa=pygame.image.load("triple_town/img/villa.png").convert_alpha()
 chateau=pygame.image.load("triple_town/img/chateau.png").convert_alpha()
 chateaumagique=pygame.image.load("triple_town/img/chateaumagique.png").convert_alpha()
 
+
 # Uniquement la page d'accueil est active ( = True)
 accueil = True
 running = False
@@ -151,7 +152,9 @@ while accueil == True:
                 if case_x!=6.0:
                     print(f"Vous avez choisi la case ({case_x}, {case_y})")
         #Place de la pièce suivante
+
         screen.blit(chateau,(850,110))
+
         pygame.display.flip()
 
 

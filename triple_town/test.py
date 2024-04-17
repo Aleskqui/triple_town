@@ -134,8 +134,6 @@ while accueil == True:
                 y =  i * (case + 10)  # Calcul des coordonnées y
                 screen.blit(text, (x, y))
 
-        pygame.display.flip() # mise à jour de la page
-
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
@@ -155,7 +153,13 @@ while accueil == True:
 
         screen.blit(chateau,(850,110))
 
-        pygame.display.flip()
+
+        # Gestion curseur (objet à positionner)
+        curseur = chateau
+        pygame.mouse.set_visible(False)
+        screen.blit(curseur, pygame.mouse.get_pos())
+
+        pygame.display.flip() # mise à jour de la page
 
 
     # Fermeture de la fenêtre    

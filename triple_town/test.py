@@ -26,6 +26,20 @@ pos_regles = btn_regles.get_rect(topleft=(320, 425)) # On recupère l'emplacemen
 btn_retour = pygame.image.load("triple_town/img/retour.png")
 pos_retour = btn_regles.get_rect(topleft=(890, 20)) # On recupère l'emplacement (le rectangle rect) du btn regles
 
+#Image des pièces
+image=pygame.image.load("triple_town/pierre.png").convert()
+image2=pygame.image.load("triple_town/rocher.png").convert()
+image3=pygame.image.load("triple_town/tour.png").convert()
+image4=pygame.image.load("triple_town/manoir.png").convert()
+image5=pygame.image.load("triple_town/herbe.png").convert()
+image6=pygame.image.load("triple_town/buisson.png").convert()
+image7=pygame.image.load("triple_town/arbuste.png").convert()
+image8=pygame.image.load("triple_town/niche.png").convert()
+image9=pygame.image.load("triple_town/maison.png").convert()
+image10=pygame.image.load("triple_town/villa.png").convert()
+image11=pygame.image.load("triple_town/chateau.png").convert()
+image12=pygame.image.load("triple_town/chateaumagique.png").convert()
+
 # Uniquement la page d'accueil est active ( = True)
 accueil = True
 running = False
@@ -136,6 +150,9 @@ while accueil == True:
                 case_y = position_souris[1] // case
                 if case_x!=6.0:
                     print(f"Vous avez choisi la case ({case_x}, {case_y})")
+        #Place de la pièce suivante
+        screen.blit(image,(850,110))
+        pygame.display.flip()
 
 
     # Fermeture de la fenêtre    

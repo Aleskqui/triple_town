@@ -107,6 +107,11 @@ while accueil == True:
 # ==================================   JEU   ===========================================
 # ======================================================================================
 
+
+
+    positions_curseur = []  # Liste pour stocker les positions du curseur
+
+
     while running == True:
         # Chargement et affichage des images
         fond_jeu = pygame.image.load("triple_town/img/fond.jpg")
@@ -116,6 +121,15 @@ while accueil == True:
         screen.blit(fond_score,(736,0))
 
         screen.blit(btn_retour,(890,20))
+
+
+
+        # Gestion curseur (objet à positionner)  --TEST
+        curseur = chateau
+        pygame.mouse.set_visible(False)
+        screen.blit(curseur, pygame.mouse.get_pos())
+
+
 
         grille = [
             [1,2,3,4,5],
@@ -134,6 +148,14 @@ while accueil == True:
                 y =  i * (case + 10)  # Calcul des coordonnées y
                 screen.blit(text, (x, y))
 
+
+
+        # Afficher le curseur à toutes les positions enregistrées
+        for pos in positions_curseur:
+            screen.blit(curseur, pos)
+
+
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
@@ -144,20 +166,24 @@ while accueil == True:
                     print("retour")
                     running = False
                     accueil = True
-                position_souris = pygame.mouse.get_pos()
-                case_x = position_souris[0] // case
-                case_y = position_souris[1] // case
-                if case_x!=6.0:
-                    print(f"Vous avez choisi la case ({case_x}, {case_y})")
-        #Place de la pièce suivante
 
+                else:
+                    # Ajouter la position du curseur à la liste
+                    positions_curseur.append(event.pos)
+
+                    position_souris = pygame.mouse.get_pos()
+                    case_x = position_souris[0] // case
+                    case_y = position_souris[1] // case
+                    if case_x!=6.0:
+                        print(f"Vous avez choisi la case ({case_x}, {case_y})")
+
+
+
+        #Place de la pièce suivante
         screen.blit(chateau,(850,110))
 
 
-        # Gestion curseur (objet à positionner)
-        curseur = chateau
-        pygame.mouse.set_visible(False)
-        screen.blit(curseur, pygame.mouse.get_pos())
+       
 
         pygame.display.flip() # mise à jour de la page
 

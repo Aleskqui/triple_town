@@ -86,13 +86,19 @@ class Items:
 
 
 class Game:
+
+
     def __init__(self):
         self.screen = pygame.display.set_mode((1000,750))
         self.running = True
         self.grille = Grille(self.screen)
         self.items = Items()
+
         self.liste_items = self.items.liste()  # On initialise la liste
         self.piece_suivante = self.liste_items.pop(0) # Premiere pièce que l'on prend et supprime
+        self.pieces_placees = [] # Liste pour stocker les positions des pieces dejà placées  
+
+
 
     def jeu(self):
         positions_curseur = []  # Liste pour stocker les positions du curseur  
@@ -104,16 +110,24 @@ class Game:
                 self.screen.blit(curseur, pos)
 
             for event in pygame.event.get():
+
                 if event.type == pygame.QUIT:
                     self.running = False
+
+
                 elif event.type == pygame.MOUSEBUTTONDOWN:
                     self.grille.case()
                     positions_curseur.append(event.pos)
+
                     if self.liste_items:  # Vérifie si la liste mélangée n'est pas vide
+                        self.pieces_placees.append(self.piece_suivante)
                         self.piece_suivante = self.liste_items.pop(0)  # On récupère la pièce suivante (premiere de la liste que l'on supprime)
+
                     else:
                         self.piece_suivante = None 
 
+
+            #----------------------------------------------------------------------------
             fond_jeu = pygame.image.load("triple_town/img/fond.jpg")
             fond_jeu_r = pygame.transform.scale(fond_jeu, (750, 750))
             self.screen.blit(fond_jeu_r, (0, 0))
@@ -121,15 +135,22 @@ class Game:
             fond_score = pygame.image.load("triple_town/img/fond_score.png")
             fond_score_r = pygame.transform.scale(fond_score, (736, 750))
             self.screen.blit(fond_score_r, (750, 0)) 
+            #----------------------------------------------------------------------------
 
-            self.grille.afficher()
 
-            pygame.mouse.set_visible(False)
+            self.grille.afficher() # On affiche la grille
+
+            pygame.mouse.set_visible(False) # On rend invisible le curseur par défaut
+            # Si il y a une piece à placer
             if self.piece_suivante:
+                # Le curseur prend la forme de cette pièce
                 self.screen.blit(self.piece_suivante, pygame.mouse.get_pos())
 
-            for pos in positions_curseur:
-                self.screen.blit(curseur, pos)
+            # Pour chaque endroit ou l'on à cliqué 
+            for i in range(len(positions_curseur)):
+                pos = positions_curseur[i] # On prend la position
+                piece = self.pieces_placees[i] # On recupère la piece que l'on a souhaité déposé
+                self.screen.blit(piece, pos) # On l'a dessine
 
             if self.piece_suivante:
                 self.screen.blit(self.piece_suivante, (850, 110))

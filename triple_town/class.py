@@ -119,7 +119,7 @@ class Game:
 
 
 
-if __name__ == '__main__':
+if __name__ == '__main__': 
     pygame.init()
     Game().jeu()
     pygame.quit()

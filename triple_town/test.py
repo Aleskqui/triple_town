@@ -120,6 +120,11 @@ while accueil == True:
         fond_score = pygame.image.load("triple_town/img/fond_score.png")
         screen.blit(fond_score,(736,0))
 
+        # Affichage du score courant
+        font = pygame.font.Font(None, 36)
+        score_text = font.render(f"Score: {score}", True, Blanc)
+        screen.blit(score_text, (750, 20))
+
         screen.blit(btn_retour,(890,20))
 
 
@@ -176,6 +181,7 @@ while accueil == True:
                     case_y = position_souris[1] // case
                     if case_x!=6.0:
                         print(f"Vous avez choisi la case ({case_x}, {case_y})")
+                        score += 1  # Incrémenter le score
 
 
 

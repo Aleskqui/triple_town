@@ -27,18 +27,18 @@ btn_retour = pygame.image.load("triple_town/img/retour.png")
 pos_retour = btn_regles.get_rect(topleft=(890, 20)) # On recupère l'emplacement (le rectangle rect) du btn regles
 
 #Image des pièces
-pierre=pygame.image.load("triple_town/img/pierre.png").convert_alpha()
-rocher=pygame.image.load("triple_town/img/rocher.png").convert_alpha()
-eglise=pygame.image.load("triple_town/img/eglise.png").convert_alpha()
-cathedrale=pygame.image.load("triple_town/img/cathedrale.png").convert_alpha()
-herbe=pygame.image.load("triple_town/img/herbe.png").convert_alpha()
-buisson=pygame.image.load("triple_town/img/buisson.png").convert_alpha()
-arbre=pygame.image.load("triple_town/img/arbre.png").convert_alpha()
-cabane=pygame.image.load("triple_town/img/cabane.png").convert_alpha()
-maison=pygame.image.load("triple_town/img/maison.png").convert_alpha()
-villa=pygame.image.load("triple_town/img/villa.png").convert_alpha()
-chateau=pygame.image.load("triple_town/img/chateau.png").convert_alpha()
-chateaumagique=pygame.image.load("triple_town/img/chateaumagique.png").convert_alpha()
+pieces=[pygame.image.load("triple_town/img/pierre.png").convert_alpha(),
+pygame.image.load("triple_town/img/rocher.png").convert_alpha(),
+pygame.image.load("triple_town/img/eglise.png").convert_alpha(),
+pygame.image.load("triple_town/img/cathedrale.png").convert_alpha(),
+pygame.image.load("triple_town/img/herbe.png").convert_alpha(),
+pygame.image.load("triple_town/img/buisson.png").convert_alpha(),
+pygame.image.load("triple_town/img/arbre.png").convert_alpha(),
+pygame.image.load("triple_town/img/cabane.png").convert_alpha(),
+pygame.image.load("triple_town/img/maison.png").convert_alpha(),
+pygame.image.load("triple_town/img/villa.png").convert_alpha(),
+pygame.image.load("triple_town/img/chateau.png").convert_alpha(),
+pygame.image.load("triple_town/img/chateaumagique.png").convert_alpha()]
 
 #Couleur de texte
 Noir = (0, 0, 0)
@@ -119,6 +119,7 @@ while accueil == True:
 
 
     positions_curseur = []  # Liste pour stocker les positions du curseur
+    piece_suivante = random.choice(pieces)  # Choisir une pièce aléatoirement
 
 
     while running == True:
@@ -139,7 +140,7 @@ while accueil == True:
 
 
         # Gestion curseur (objet à positionner)  --TEST
-        curseur = chateau
+        curseur = piece_suivante
         pygame.mouse.set_visible(False)
         screen.blit(curseur, pygame.mouse.get_pos())
 
@@ -191,11 +192,12 @@ while accueil == True:
                     if case_x!=6.0:
                         print(f"Vous avez choisi la case ({case_x}, {case_y})")
                         score += 1  # Incrémenter le score
+                        piece_suivante = random.choice(pieces)  # Choisir une pièce aléatoirement
 
 
 
         #Place de la pièce suivante
-        screen.blit(chateau,(850,110))
+        screen.blit(piece_suivante,(850,110))
 
 
        

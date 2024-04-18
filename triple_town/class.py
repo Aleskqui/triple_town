@@ -77,6 +77,9 @@ class Items:
     def suivant(self):
         
         return self.liste_items[0]
+    
+
+
 
 
 
@@ -100,11 +103,24 @@ class Game:
 
 
 
+
+    def score(self,compt):
+
+
+        # Affichage du score courant
+        font = pygame.font.Font(None, 36)
+        score_text = font.render(f"Score: {compt}", True, (255,255,0))
+        self.screen.blit(score_text, (800, 20))
+        
+
+
+
     def jeu(self):
         positions_curseur = []  # Liste pour stocker les positions du curseur  
 
         while self.running:
             curseur = self.piece_suivante
+            compt = 0
 
             for pos in positions_curseur:
                 self.screen.blit(curseur, pos)
@@ -118,6 +134,7 @@ class Game:
                 elif event.type == pygame.MOUSEBUTTONDOWN:
                     self.grille.case()
                     positions_curseur.append(event.pos)
+                    compt += 1
 
                     if self.liste_items:  # Vérifie si la liste mélangée n'est pas vide
                         self.pieces_placees.append(self.piece_suivante)
@@ -140,6 +157,8 @@ class Game:
 
             self.grille.afficher() # On affiche la grille
 
+
+            #----------------------------------------------------------------------------
             pygame.mouse.set_visible(False) # On rend invisible le curseur par défaut
             # Si il y a une piece à placer
             if self.piece_suivante:
@@ -152,12 +171,21 @@ class Game:
                 piece = self.pieces_placees[i] # On recupère la piece que l'on a souhaité déposé
                 self.screen.blit(piece, pos) # On l'a dessine
 
+                compt += 1
+
             if self.piece_suivante:
                 self.screen.blit(self.piece_suivante, (850, 110))
+            #----------------------------------------------------------------------------
+
+
+
+            self.score(compt)
 
             pygame.display.flip()
 
         pygame.quit()
+
+
 
 
 

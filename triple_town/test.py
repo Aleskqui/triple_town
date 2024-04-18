@@ -40,6 +40,15 @@ villa=pygame.image.load("triple_town/img/villa.png").convert_alpha()
 chateau=pygame.image.load("triple_town/img/chateau.png").convert_alpha()
 chateaumagique=pygame.image.load("triple_town/img/chateaumagique.png").convert_alpha()
 
+#Couleur de texte
+Noir = (0, 0, 0)
+Blanc = (255, 255, 255)
+Gris = (128, 128, 128)
+Vert=(78,189,34)
+
+# Score
+score = 0
+
 
 # Uniquement la page d'accueil est active ( = True)
 accueil = True
@@ -120,6 +129,11 @@ while accueil == True:
         fond_score = pygame.image.load("triple_town/img/fond_score.png")
         screen.blit(fond_score,(736,0))
 
+        # Affichage du score courant
+        font = pygame.font.Font(None, 36)
+        score_text = font.render(f"Score: {score}", True, Blanc)
+        screen.blit(score_text, (750, 20))
+
         screen.blit(btn_retour,(890,20))
 
 
@@ -176,6 +190,7 @@ while accueil == True:
                     case_y = position_souris[1] // case
                     if case_x!=6.0:
                         print(f"Vous avez choisi la case ({case_x}, {case_y})")
+                        score += 1  # Incrémenter le score
 
 
 

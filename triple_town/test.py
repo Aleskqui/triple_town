@@ -40,6 +40,12 @@ villa=pygame.image.load("triple_town/img/villa.png").convert_alpha()
 chateau=pygame.image.load("triple_town/img/chateau.png").convert_alpha()
 chateaumagique=pygame.image.load("triple_town/img/chateaumagique.png").convert_alpha()
 
+#Couleur de texte
+Noir = (0, 0, 0)
+Blanc = (255, 255, 255)
+Gris = (128, 128, 128)
+Vert=(78,189,34)
+
 # Score
 score = 0
 

@@ -40,6 +40,9 @@ villa=pygame.image.load("triple_town/img/villa.png").convert_alpha()
 chateau=pygame.image.load("triple_town/img/chateau.png").convert_alpha()
 chateaumagique=pygame.image.load("triple_town/img/chateaumagique.png").convert_alpha()
 
+# Score
+score = 0
+
 
 # Uniquement la page d'accueil est active ( = True)
 accueil = True

@@ -174,6 +174,9 @@ class Game:
                 compt += 1
 
             if self.piece_suivante:
+                font = pygame.font.Font(None, 36)
+                texte_suivant = font.render("Item à placer :", True, (255,255,0))
+                self.screen.blit(texte_suivant, (800, 80))
                 self.screen.blit(self.piece_suivante, (850, 110))
             #----------------------------------------------------------------------------
 

@@ -50,6 +50,27 @@ Vert=(78,189,34)
 # Score
 score = 0
 
+# Définition des éléments du jeu
+class Element:
+    def __init__(self, nom, symbole, sprite):
+        self.nom = nom
+        self.symbole = symbole
+        self.sprite = sprite
+
+# Création des éléments
+pierre = Element("pierre", "P", pieces[0])
+rocher = Element("rocher", "R", pieces[1])
+eglise = Element("église", "E", pieces[2])
+basilique = Element("basilique", "B", pieces[3])
+herbe = Element("herbe", "H", pieces[4])
+buisson = Element("buisson", "B", pieces[5])
+arbre = Element("arbre", "A", pieces[6])
+maison = Element("cabane", "CA", pieces[7])
+demeure = Element("maison", "M", pieces[8])
+villa = Element("villa", "V", pieces[9])
+chateau = Element("château", "C", pieces[10])
+chateau_enchante = Element("château magique", "CM", pieces[11])
+
 
 # Uniquement la page d'accueil est active ( = True)
 accueil = True

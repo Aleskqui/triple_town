@@ -184,10 +184,10 @@ while accueil == True:
                     accueil = True
 
                 else:
-                    # Ajouter la position du curseur à la liste
-                    positions_curseur.append(event.pos)
 
                     position_souris = pygame.mouse.get_pos()
+                    if position_souris[0] < 710:  # Vérifier si la position est en dehors de la zone du score
+                        positions_curseur.append(position_souris)
                     case_x = position_souris[0] // case
                     case_y = position_souris[1] // case
                     if case_x!=6.0:

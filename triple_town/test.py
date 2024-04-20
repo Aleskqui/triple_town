@@ -104,6 +104,7 @@ while accueil == True:
                 print("regles")
                 accueil = False
                 regles = True
+                son_accueil.stop()
                 
 
 
@@ -134,6 +135,7 @@ while accueil == True:
                     print("retour")
                     regles = False
                     accueil = True
+                    son_accueil.stop()
 
 
 
@@ -206,6 +208,7 @@ while accueil == True:
                     print("retour")
                     running = False
                     accueil = True
+                    son_accueil.stop()
 
                 else:
 

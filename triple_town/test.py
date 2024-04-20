@@ -71,13 +71,18 @@ villa = Element("villa", "V", pieces[9])
 chateau = Element("château", "C", pieces[10])
 chateau_enchante = Element("château magique", "CM", pieces[11])
 
-son_accueil = pygame.mixer.Sound("triple_town/sounds/aventure.mp3")
+# Chargement des fichiers sons
+son_jeu = pygame.mixer.Sound("triple_town/sounds/aventure.mp3")
+son_accueil = pygame.mixer.Sound("triple_town/sounds/accueil.mp3")
 
 
 # Uniquement la page d'accueil est active ( = True)
 accueil = True
 running = False
 regles = False
+
+
+son_accueil.play()
 while accueil == True:
 
     # On affiche les images 
@@ -96,7 +101,8 @@ while accueil == True:
                 print("play")
                 accueil = False
                 running = True
-                son_accueil.play() 
+                son_accueil.stop()
+                son_jeu.play() 
 
 
             # On vérifie si on a cliqué sur le bouton jouer
@@ -105,6 +111,7 @@ while accueil == True:
                 accueil = False
                 regles = True
                 son_accueil.stop()
+                son_jeu.stop() 
                 
 
 
@@ -135,7 +142,8 @@ while accueil == True:
                     print("retour")
                     regles = False
                     accueil = True
-                    son_accueil.stop()
+                    son_jeu.stop()
+                    son_accueil.play()
 
 
 
@@ -208,7 +216,8 @@ while accueil == True:
                     print("retour")
                     running = False
                     accueil = True
-                    son_accueil.stop()
+                    son_jeu.stop()
+                    son_accueil.play()
 
                 else:
 

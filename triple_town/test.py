@@ -79,21 +79,24 @@ son_accueil = pygame.mixer.Sound("triple_town/sounds/accueil.mp3")
 
 # Modélisation de l'aire de jeu
 class Grille:
+    #La grille est modélisée sous forme d'une matrice de taille taille_x x taille_y, où chaque case peut contenir un élément du jeu (de type Element) ou être vide (None). La grille possède également un "panier" qui permet de stocker temporairement un élément.
     def __init__(self, taille_x, taille_y):
         self.taille_x = taille_x
         self.taille_y = taille_y
         self.grille = np.zeros((taille_x, taille_y), dtype=object)
         self.panier = None
-
+    # Place un élément à une position donnée dans la grille
     def placer_element(self, element, x, y):
         self.grille[x, y] = element
-
+    # Supprime un élément à une position donnée dans la grille
     def supprimer_elements(self, x, y, taille):
         for i in range(x - taille + 1, x + 1):
             for j in range(y - taille + 1, y + 1):
                 if 0 <= i < self.taille_x and 0 <= j < self.taille_y:
                     self.grille[i, j] = None
-
+    
+    
+    #Vérifie s'il y a un alignement de 3 éléments identiques (horizontalement ou verticalement) à partir de la position (x, y). Elle renvoie l'élément aligné et la taille de l'alignement (3 dans ce cas).
     def verifier_alignement(self, x, y):
         # Vérifier l'alignement horizontal
         if x + 2 < self.taille_x and self.grille[x, y] == self.grille[x + 1, y] == self.grille[x + 2, y]:

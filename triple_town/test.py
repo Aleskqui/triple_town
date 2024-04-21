@@ -1,5 +1,6 @@
 import pygame
 import random
+import numpy as np 
 pygame.init()
 
 # Nom Fenêtre
@@ -41,6 +42,7 @@ pygame.image.load("triple_town/img/villa.png").convert_alpha(),
 pygame.image.load("triple_town/img/chateau.png").convert_alpha(),
 pygame.image.load("triple_town/img/chateaumagique.png").convert_alpha()]
 
+
 #Couleur de texte
 Noir = (0, 0, 0)
 Blanc = (255, 255, 255)
@@ -75,6 +77,51 @@ chateau_enchante = Element("château magique", "CM", pieces[11])
 son_jeu = pygame.mixer.Sound("triple_town/sounds/aventure.mp3")
 son_accueil = pygame.mixer.Sound("triple_town/sounds/accueil.mp3")
 
+# Modélisation de l'aire de jeu
+class Grille:
+    def __init__(self, taille_x, taille_y):
+        self.taille_x = taille_x
+        self.taille_y = taille_y
+        self.grille = np.zeros((taille_x, taille_y), dtype=object)
+        self.panier = None
+
+    def placer_element(self, element, x, y):
+        self.grille[x, y] = element
+
+    def supprimer_elements(self, x, y, taille):
+        for i in range(x - taille + 1, x + 1):
+            for j in range(y - taille + 1, y + 1):
+                if 0 <= i < self.taille_x and 0 <= j < self.taille_y:
+                    self.grille[i, j] = None
+
+    def verifier_alignement(self, x, y):
+        # Vérifier l'alignement horizontal
+        if x + 2 < self.taille_x and self.grille[x, y] == self.grille[x + 1, y] == self.grille[x + 2, y]:
+            return self.grille[x, y], 3
+        # Vérifier l'alignement vertical
+        if y + 2 < self.taille_y and self.grille[x, y] == self.grille[x, y + 1] == self.grille[x, y + 2]:
+            return self.grille[x, y], 3
+        return None, 0
+
+    def update(self):
+        # Logique de mise à jour de la grille
+        pass
+
+# Création de la grille de jeu
+grille = Grille(5, 5)
+
+# Placement d'éléments dans la grille
+grille.placer_element(pierre, 0, 0)
+grille.placer_element(rocher, 1, 1)
+grille.placer_element(eglise, 2, 2)
+grille.placer_element(basilique, 3, 3)
+grille.placer_element(herbe, 4, 4)
+
+# Vérification de l'alignement
+element, taille = grille.verifier_alignement(0, 0)
+if element:
+    print(f"Alignement de {element.nom} sur {taille} cases")
+    grille.supprimer_elements(0, 0, taille)
 
 # Uniquement la page d'accueil est active ( = True)
 accueil = True

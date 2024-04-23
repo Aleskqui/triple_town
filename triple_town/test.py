@@ -58,6 +58,9 @@ class Element:
         self.nom = nom
         self.symbole = symbole
         self.sprite = sprite
+    
+    def __str__(self):
+        return str(self.symbole)
 
 # Création des éléments
 pierre = Element("pierre", "P", pieces[0])
@@ -110,6 +113,21 @@ class Grille:
         # Logique de mise à jour de la grille
         pass
 
+    def afficher_grille(self):
+    #Affiche la grille dans la console
+        for y in range(self.taille_y):
+            ligne = ""
+            for x in range(self.taille_x):
+                element = self.grille[x, y]
+                if element is None:
+                    ligne += "- "
+                else:
+                    ligne += str(element) + " "
+            print(ligne)
+    
+        if self.panier is not None:
+            print(f"Panier: {self.panier}")
+
 # Création de la grille de jeu
 grille = Grille(5, 5)
 
@@ -119,6 +137,8 @@ grille.placer_element(rocher, 1, 1)
 grille.placer_element(eglise, 2, 2)
 grille.placer_element(basilique, 3, 3)
 grille.placer_element(herbe, 4, 4)
+
+grille.afficher_grille()
 
 # Vérification de l'alignement
 element, taille = grille.verifier_alignement(0, 0)

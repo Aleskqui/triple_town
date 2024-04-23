@@ -107,6 +107,12 @@ class Grille:
         # Vérifier l'alignement vertical
         if y + 2 < self.taille_y and self.grille[x, y] == self.grille[x, y + 1] == self.grille[x, y + 2]:
             return self.grille[x, y], 3
+             # Vérifier l'alignement diagonal (descendant)
+        if x + 2 < self.taille_x and y + 2 < self.taille_y and self.grille[x, y] == self.grille[x + 1, y + 1] == self.grille[x + 2, y + 2]:
+            return self.grille[x, y], 3
+        # Vérifier l'alignement diagonal (ascendant)
+        if x + 2 < self.taille_x and y - 2 >= 0 and self.grille[x, y] == self.grille[x + 1, y - 1] == self.grille[x + 2, y - 2]:
+            return self.grille[x, y], 3
         return None, 0
 
     def update(self):

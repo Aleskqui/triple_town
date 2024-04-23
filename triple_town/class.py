@@ -293,8 +293,6 @@ if __name__ == '__main__':
 
     Game().jeu()
 
-<<<<<<< HEAD
     pygame.quit()
-=======
-    pygame.quit()
->>>>>>> b408ed34f3a82ae953e77fe1d98cb31e91e2ac2e
+
+

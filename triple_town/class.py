@@ -1,6 +1,74 @@
 import pygame
 import random
+import numpy as np 
 pygame.display.set_caption("Triple Town")
+
+
+#==================================================================================================================
+#===============================================     ACCUEIL     ==================================================
+#==================================================================================================================
+
+
+
+class Accueil:
+
+    
+    def __init__(self):
+        self.screen = pygame.display.set_mode((1000,750))
+        # Ecran d'accueil
+        self.lancement = pygame.image.load("triple_town/img/home.png")
+
+        # Bouton Play
+        self.btn_play = pygame.image.load("triple_town/img/play.png")
+        self.pos_play = self.btn_play.get_rect(topleft=(400, 300)) # On recupère l'emplacement (le rectangle rect) du btn play
+
+        # Bouton Règles
+        self.btn_regles = pygame.image.load("triple_town/img/btn_regles.png")
+        self.pos_regles = self.btn_regles.get_rect(topleft=(320, 425)) # On recupère l'emplacement (le rectangle rect) du btn regles
+
+        # Bouton Retour
+        self.btn_retour = pygame.image.load("triple_town/img/retour.png")
+        self.pos_retour = self.btn_retour.get_rect(topleft=(890, 20)) # On recupère l'emplacement (le rectangle rect) du btn regles
+
+        # Règles
+        self.regles = pygame.image.load("triple_town/img/regles.png")
+
+
+    def afficher(self):
+        self.screen.blit(self.lancement,(0,0))
+        self.screen.blit(self.btn_play,(400,300))
+        self.screen.blit(self.btn_regles,(320,425))
+        pygame.display.flip()
+
+
+
+    def en_cours(self):
+
+        for event in pygame.event.get():
+
+            if event.type == pygame.QUIT:
+                    pygame.quit()
+
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                mouse_pos = pygame.mouse.get_pos()
+
+                # On vérifie si le btn play est cliqué
+                if self.pos_play.collidepoint(mouse_pos):
+                    return False  # Si c'est le cas on quitte l'accueil
+                
+                # On vérifie si le btn règles est cliqué
+                elif self.pos_regles.collidepoint(mouse_pos):
+                    
+                    self.screen.blit(self.regles, (0, 0))  # Si c'est le cas on affiche les règles
+                    self.screen.blit(self.btn_retour, (890, 20))
+                    pygame.display.flip()
+
+                elif self.pos_retour.collidepoint(mouse_pos):
+                    self.pieces_placees = []
+                    self.afficher()
+
+        return True  # L'écran d'accueil reste affiché 
+
 
 
 
@@ -10,12 +78,13 @@ pygame.display.set_caption("Triple Town")
 #==================================================================================================================
 
 class Grille:
-    def __init__(self, screen):
-        self.screen = screen
+    def __init__(self, taille):
+        self.grille = np.zeros(taille, dtype=object)
+        self.screen = pygame.display.set_mode((1000,750))
         self.cases = []
-        taille_case = 50
-        for y in range(15): # nombre de lignes
-            for x in range(15):  # nombre de colonnes
+        taille_case = 750/taille 
+        for y in range(taille): # nombre de lignes
+            for x in range(taille):  # nombre de colonnes
                 case_x = x * taille_case 
                 case_y = y * taille_case
                 case = ((case_x, case_y), (case_x + taille_case, case_y), (case_x + taille_case, case_y + taille_case), (case_x, case_y + taille_case))
@@ -94,12 +163,16 @@ class Game:
     def __init__(self):
         self.screen = pygame.display.set_mode((1000,750))
         self.running = True
-        self.grille = Grille(self.screen)
+        self.grille = Grille(10)
+        self.accueil = Accueil()
         self.items = Items()
 
         self.liste_items = self.items.liste()  # On initialise la liste
         self.piece_suivante = self.liste_items.pop(0) # Premiere pièce que l'on prend et supprime
         self.pieces_placees = [] # Liste pour stocker les positions des pieces dejà placées  
+
+        self.btn_retour = pygame.image.load("triple_town/img/retour.png")
+        self.pos_retour = self.btn_retour.get_rect(topleft=(890, 20)) # On recupère l'emplacement (le rectangle rect) du btn retour
 
 
 
@@ -110,7 +183,7 @@ class Game:
         # Affichage du score courant
         font = pygame.font.Font(None, 36)
         score_text = font.render(f"Score: {compt}", True, (255,255,0))
-        self.screen.blit(score_text, (800, 20))
+        self.screen.blit(score_text, (800, 120))
         
 
 
@@ -132,11 +205,18 @@ class Game:
 
 
                 elif event.type == pygame.MOUSEBUTTONDOWN:
+                    mouse_pos = pygame.mouse.get_pos()
+
                     self.grille.case()
                     positions_curseur.append(event.pos)
                     compt += 1
 
-                    if self.liste_items:  # Vérifie si la liste mélangée n'est pas vide
+                    if accueil.pos_retour.collidepoint(mouse_pos):
+                    
+                        accueil.afficher()
+
+
+                    elif self.liste_items:  # Vérifie si la liste mélangée n'est pas vide
                         self.pieces_placees.append(self.piece_suivante)
                         self.piece_suivante = self.liste_items.pop(0)  # On récupère la pièce suivante (premiere de la liste que l'on supprime)
 
@@ -152,6 +232,8 @@ class Game:
             fond_score = pygame.image.load("triple_town/img/fond_score.png")
             fond_score_r = pygame.transform.scale(fond_score, (736, 750))
             self.screen.blit(fond_score_r, (750, 0)) 
+
+            self.screen.blit(self.btn_retour,(890,20))
             #----------------------------------------------------------------------------
 
 
@@ -176,8 +258,8 @@ class Game:
             if self.piece_suivante:
                 font = pygame.font.Font(None, 36)
                 texte_suivant = font.render("Item à placer :", True, (255,255,0))
-                self.screen.blit(texte_suivant, (800, 80))
-                self.screen.blit(self.piece_suivante, (850, 110))
+                self.screen.blit(texte_suivant, (800, 180))
+                self.screen.blit(self.piece_suivante, (850, 210))
             #----------------------------------------------------------------------------
 
 
@@ -201,5 +283,14 @@ class Game:
 
 if __name__ == '__main__': 
     pygame.init()
+    accueil = Accueil()
+    running = False
+    regles = False
+    accueil.afficher()
+
+    while accueil.en_cours():
+        pass
+
     Game().jeu()
+
     pygame.quit()

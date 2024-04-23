@@ -43,6 +43,16 @@ main h1{
 main section{
     width: 60%;
     line-height: 30px;
+<<<<<<< HEAD
+}
+
+
+
+main img{
+    height: 30px;
+    width: auto;
+=======
+>>>>>>> b408ed34f3a82ae953e77fe1d98cb31e91e2ac2e
 }
 
 
@@ -51,4 +61,6 @@ main img{
     height: 30px;
     width: auto;
 }
+
+
 

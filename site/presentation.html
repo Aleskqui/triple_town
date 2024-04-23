@@ -49,6 +49,61 @@
 
       <main>
         <h1>Presentation</h1>
+
+        <section>
+          <div>
+            <h3>Introduction au jeu :</h3>
+            <p>Bienvenue dans Triple Town, un jeu de construction de villes sur dispositif mobile où vous devez utiliser stratégie et réflexion pour développer votre ville sur une aire de jeu de 6x6 cases.</p>
+          </div>
+
+          <div>
+            <h3>Aire de jeu :</h3>
+            <p>L'aire de jeu est une grille de 6x6 cases où vous construirez votre ville. La case en haut à gauche (0,0) sert de panier pour stocker temporairement un élément</p>
+            <img src="img/aire.png" alt="aire" style="height: 400px; width: auto;">
+          </div>
+
+          <div>
+            <h3>Éléments du jeu :</h3>
+            <ul>
+              <li>la pierre (<img src="img/pierre.png" alt="pierre">) et le rocher (<img src="img/rocher.png" alt="rocher">) qui est la réunion d'au moins deux pierres</li>
+              <li>l'église (<img src="img/eglise.png" alt="eglise">) et la basilique (<img src="img/cathedrale.png" alt="cathedrale">) qui est la réunion d'au moins 3 églises</li>
+              <li>l'herbe (<img src="img/herbe.png" alt="herbe">)</li>
+              <li>le buisson (<img src="img/buisson.png" alt="buisson">) obtenu avec au moins 3 herbes adjacentes à une case</li>
+              <li>l'arbre (<img src="img/arbre.png" alt="arbre">) obtenu avec au moins 3 buissons adjacents à une case</li>
+              <li>la maison (<img src="img/cabane.png" alt="cabane">) obtenue avec au moins 3 arbres adjacents à une case</li>
+              <li>la demeure (<img src="img/maison.png" alt="maison">) obtenue avec au moins 3 maisons adjacentes à une case</li>
+              <li>la villa (<img src="img/villa.png" alt="villa">) obtenue avec au moins 3 demeures adjacentes à une case</li>
+              <li>le château (<img src="img/chateau.png" alt="chateau">) obtenu avec au moins 3 villas adjacentes à une case</li>
+              <li>le château enchanté (<img src="img/chateaumagique.png" alt="chateaumagique">) obtenu avec au moins 2 châteaux adjacents à une case</li>
+            </ul>
+            <p style="font-style: italic;">La réunion de plusieurs éléments rapporte des points et des points permettent d'acheter certains éléments.</p>
+          </div>
+
+          <div>
+            <h3>Éléments perturbateurs :</h3>
+            <p>Il existe également des éléments perturbateurs :</p>
+            <ul>
+              <li>les ours (<img src="img/ours.png" alt="ours">) qui se déplacent aléatoirement sur une case vide adjacente</li>
+              <li>les ninja (<img src="img/ninja.png" alt="ninja">) qui sont des ours qui sautent aléatoirement sur n'importe quelle case vide</li>
+            </ul>
+            <p style="font-style: italic;">Lorsque des ours ne peuvent plus se déplacer ils ont supprimés et remplacés par une église.</p>
+          </div>
+
+          <div>
+            <h3>Artéfacts :</h3>
+            <p>Enfin il existe deux artéfacts :</p>
+            <ul>
+              <li>le crystal (<img src="img/crystal.png" alt="crystal">) qui permet de réunir au moins deux éléments pour en former un de type supérieur, mais si il n'y a qu'un seul élément aux alentour le crystal crée une pierre</li>
+              <li>le bot (<img src="img/bot.png" alt="bot">) qui permet de supprimer n'importe quelle élément ou s'il s'agit d'ours ou de grizly, qui permet de les tuer</li>
+            </ul>
+          </div>
+
+          <div>
+            <h3>Déroulement du jeu :</h3>
+            <p>À chaque tour, un nouvel élément généré de manière aléatoire apparaît que vous devez placer sur l'aire de jeu.</p>
+            <p>L'objectif est de construire la ville la plus grande et la plus avancée possible en utilisant les éléments disponibles et en gagnant des points.</p>
+          </div>
+        </section>
       </main>
     
 </body>

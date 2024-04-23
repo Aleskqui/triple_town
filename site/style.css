@@ -14,10 +14,25 @@ body{
 
 main{
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    justify-content: space-around;
     align-items: center;
-    margin-top: 10%;
+    margin-top: 2%;
     font-family: "DM Sans", sans-serif;
+}
+
+main div{
+    margin: 15px;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+main div:nth-child(2n){
+    background-color: rgb(48, 172, 48);
+}
+
+main div:nth-child(2n+1){
+    background-color:  rgb(124, 175, 47);
 }
 
 main h1{
@@ -26,9 +41,14 @@ main h1{
 }
 
 main section{
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    width: 50%;
+    width: 60%;
+    line-height: 30px;
+}
+
+
+
+main img{
+    height: 30px;
+    width: auto;
 }
 

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Développement</title>
 
     <link rel="stylesheet" href="style.css">
 
@@ -48,7 +48,40 @@
 
 
       <main>
-        <h1>Developpement</h1>
+        <h1>Développement</h1>
+
+        <section>
+          <div>
+            <h3>Premier travail</h3>
+            <p>Le premier travail consistait à utiliser pygame pour créer et dessiner l'interface du jeu. Celle-ci contient la prochaine pièce à positionner, le panier, l'aire de jeu et le score courant
+                . Il a fallu ensuite gérer les événements de la souris afin de déterminer sur quelle case on a cliqué.</p>
+          </div>
+
+          <div>
+            <h3>Deuxième Travail</h3>
+            <p>Il a fallu ensuite créer les sprites et dessiner les éléments du jeu :</p>
+            <ul>
+                <li>la pierre (<img src="img/pierre.png" alt="pierre">) et le rocher (<img src="img/rocher.png" alt="rocher">) qui est la réunion d'au moins deux pierres</li>
+                <li>l'église (<img src="img/eglise.png" alt="eglise">) et la basilique (<img src="img/cathedrale.png" alt="cathedrale">) qui est la réunion d'au moins 3 églises</li>
+                <li>l'herbe (<img src="img/herbe.png" alt="herbe">)</li>
+                <li>le buisson (<img src="img/buisson.png" alt="buisson">) obtenu avec au moins 3 herbes adjacentes à une case</li>
+                <li>l'arbre (<img src="img/arbre.png" alt="arbre">) obtenu avec au moins 3 buissons adjacents à une case</li>
+                <li>la maison (<img src="img/cabane.png" alt="cabane">) obtenue avec au moins 3 arbres adjacents à une case</li>
+                <li>la demeure (<img src="img/maison.png" alt="maison">) obtenue avec au moins 3 maisons adjacentes à une case</li>
+                <li>la villa (<img src="img/villa.png" alt="villa">) obtenue avec au moins 3 demeures adjacentes à une case</li>
+                <li>le château (<img src="img/chateau.png" alt="chateau">) obtenu avec au moins 3 villas adjacentes à une case</li>
+                <li>le château enchanté (<img src="img/chateaumagique.png" alt="chateaumagique">) obtenu avec au moins 2 châteaux adjacents à une case</li>
+              </ul>
+          </div>
+
+          <div>
+            <h3>Modélisation</h3>
+            
+            <p>Enfin il a fallu effectuer la modélisation de l'aire de jeu dans laquelle on va positionner les pièces, elle est modélisée sous forme d'une matrice. Nous avons donc  utiliser la librarie numpy pour représenter les matrices.
+                
+                Nous avons donc ensuite modéliser les éléments du jeu de la façon suivante. Dans notre jeu, un élément est défini par son nom "herbe", son symbole : H et un sprite ou une méthode de dessin</p>
+          </div>
+        </section>
       </main>
     
 </body>

@@ -1,5 +1,5 @@
 body{
-    background-color: red;
+
 }
 
 .navbar{
@@ -28,16 +28,20 @@ main div{
 }
 
 main div:nth-child(2n){
-    background-color: rgb(48, 172, 48);
+    background-color: #c7684c;
+    color: #e4bea4;
 }
 
 main div:nth-child(2n+1){
-    background-color:  rgb(124, 175, 47);
+    background-color: #809670;
+    color: #374034;
 }
 
 main h1{
     letter-spacing: 3px;
     font-size: 100px;
+    color: #c7684c;
+    text-shadow: 5px 5px 0px #e4bea4;
 }
 
 main section{
@@ -46,7 +50,6 @@ main section{
 }
 
 
-
 main img{
     height: 30px;
     width: auto;
@@ -55,10 +58,26 @@ main img{
 
 
 
-main img{
-    height: 30px;
-    width: auto;
+/*==========================================================================*/
+/* ======================   STYLE PAGE GROUPE   ============================*/  
+/*==========================================================================*/
+
+
+main .section-card{
+    margin: 30px;
+    display: flex;
+    justify-content: space-around;
 }
+
+main .section-card img{
+    height: auto;
+}
+
+main .section-card h5{
+    margin: 10px;
+    text-align: center;
+}
+
 
 
 

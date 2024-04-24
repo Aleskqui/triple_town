@@ -169,6 +169,7 @@ class Items:
 #===============================================     Grille Console    ============================================
 #==================================================================================================================
 
+
 class GrilleConsole:
     # La grille est modélisée sous forme d'une matrice de taille taille_x x taille_y, où chaque case peut contenir un élément du jeu (de type Element) ou être vide (None).
     # La grille possède également un "panier" qui permet de stocker temporairement un élément.
@@ -378,3 +379,4 @@ if __name__ == '__main__':
     Game().jeu()
 
     pygame.quit()
+

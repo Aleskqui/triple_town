@@ -131,7 +131,10 @@ class Grille:
     
     # Place un élément à une position donnée dans la grille
     def placer_element(self, element, x, y):
-         self.grille[x, y] = element
+        if x <= self.taille_x and y <= self.taille_y :
+            self.grille[x, y] = element
+        else:  
+            pass
 
     # Supprime un élément à une position donnée dans la grille
     def supprimer_elements(self, x, y, taille):
@@ -276,8 +279,10 @@ class Game:
     def jeu(self):
         self.son.lire_audio("triple_town/sounds/aventure.mp3")
         positions_curseur = []
+        self.accueil = Accueil()
 
         while self.running:
+            
             curseur = self.piece_suivante
             compt = 0
 
@@ -289,21 +294,32 @@ class Game:
                     self.running = False
                 elif event.type == pygame.MOUSEBUTTONDOWN:
                     mouse_pos = pygame.mouse.get_pos()
-                    # On calcul les coordonnés de la case avc la position de la souris
-                    case_x = mouse_pos[0] // (750 / self.grille.taille_x) 
-                    case_y = mouse_pos[1] // (750 / self.grille.taille_y)  
-                    self.grille.placer_element(self.piece_suivante, int(case_x), int(case_y))  # Placer l'élément sur la grille
-                    positions_curseur.append(event.pos)
-                    compt += 1
 
-                    if accueil.pos_retour.collidepoint(mouse_pos):
-                        accueil.afficher()
-                    elif self.liste_items:
-                        self.pieces_placees.append(self.piece_suivante)
-                        self.piece_suivante = self.liste_items.pop(0)
+
+                    # Gestion des clics dans la zone grise
+                    
+                    if mouse_pos[0] > 750 : # zone score etc... 
+                        
+                        if accueil.pos_retour.collidepoint(mouse_pos):
+                            self.accueil.afficher()
+
+
+                    # Gestion des clics dans la zone de jeu 
+
                     else:
-                        self.piece_suivante = None
 
+                        # On calcul les coordonnés de la case avc la position de la souris
+                        case_x = mouse_pos[0] // (750 / self.grille.taille_x) 
+                        case_y = mouse_pos[1] // (750 / self.grille.taille_y)  
+                        self.grille.placer_element(self.piece_suivante, int(case_x), int(case_y))  # Placer l'élément sur la grille
+                        positions_curseur.append(event.pos)
+                        compt += 1
+
+                        if self.liste_items:
+                            self.pieces_placees.append(self.piece_suivante)
+                            self.piece_suivante = self.liste_items.pop(0)
+                        else:
+                            self.piece_suivante = None
 
             #----------------------------------------------------------------------------
             fond_jeu = pygame.image.load("triple_town/img/fond.jpg")
@@ -322,11 +338,21 @@ class Game:
 
 
             #----------------------------------------------------------------------------
-            pygame.mouse.set_visible(False) # On rend invisible le curseur par défaut
-            # Si il y a une piece à placer
-            if self.piece_suivante:
-                # Le curseur prend la forme de cette pièce
-                self.screen.blit(self.piece_suivante, pygame.mouse.get_pos())
+
+            partie_grise = (750,0)
+            if pygame.mouse.get_pos() < partie_grise:
+                pygame.mouse.set_visible(False) # On rend invisible le curseur par défaut
+
+                # Si il y a une piece à placer
+                if self.piece_suivante:
+                    # Le curseur prend la forme de cette pièce
+                    self.screen.blit(self.piece_suivante, pygame.mouse.get_pos())
+
+            else:
+                pygame.mouse.set_visible(True)
+
+
+            
 
             # Pour chaque endroit ou l'on à cliqué 
             for i in range(len(positions_curseur)):
@@ -372,9 +398,12 @@ if __name__ == '__main__':
     while accueil.en_cours():
         pass
 
-    Game().jeu()
+    game = Game()
+    game.jeu()
 
     pygame.quit()
+
+
 
 
 

@@ -317,6 +317,7 @@ class Game:
                         case_x = mouse_pos[0] // (750 / self.grille.taille_x) 
                         case_y = mouse_pos[1] // (750 / self.grille.taille_y)  
                         self.grille.placer_element(self.piece_suivante, int(case_x), int(case_y))  # Placer l'élément sur la grille
+                        self.grille.afficher_grille_console()  # Ajouter la pièce dans la grille de la console
                         positions_curseur.append(event.pos)
                         compt += 1
 

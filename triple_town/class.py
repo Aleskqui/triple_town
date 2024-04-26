@@ -193,19 +193,13 @@ class Items:
             "P": pygame.image.load("triple_town/img/pierre.png").convert_alpha(),
             "R": pygame.image.load("triple_town/img/rocher.png").convert_alpha(),
             "E": pygame.image.load("triple_town/img/eglise.png").convert_alpha(),
-            "C": pygame.image.load("triple_town/img/cathedrale.png").convert_alpha(),
             "H": pygame.image.load("triple_town/img/herbe.png").convert_alpha(),
             "B": pygame.image.load("triple_town/img/buisson.png").convert_alpha(),
             "A": pygame.image.load("triple_town/img/arbre.png").convert_alpha(),
-            "CA": pygame.image.load("triple_town/img/cabane.png").convert_alpha(),
-            "M": pygame.image.load("triple_town/img/maison.png").convert_alpha(),
-            "V": pygame.image.load("triple_town/img/villa.png").convert_alpha(),
-            "CH": pygame.image.load("triple_town/img/chateau.png").convert_alpha(),
-            "CM": pygame.image.load("triple_town/img/chateaumagique.png").convert_alpha()
         }
 
     def liste(self):
-        self.liste_items = ["P", "R", "E", "C", "H", "A", "CA", "M", "V", "CH", "CM"]  # Exemple avec seulement deux pièces
+        self.liste_items = ["P", "R", "E", "H", "A"]  # Exemple avec seulement deux pièces
         random.shuffle(self.liste_items)
         return self.liste_items
 

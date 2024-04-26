@@ -63,6 +63,7 @@ class Accueil:
                 
                 # On vérifie si le btn règles est cliqué
                 elif self.pos_regles.collidepoint(mouse_pos):
+                    self.son.fermer_audio("triple_town/sounds/accueil.mp3")
                     
                     self.screen.blit(self.regles, (0, 0))  # Si c'est le cas on affiche les règles
                     self.screen.blit(self.btn_retour, (890, 20))
@@ -88,6 +89,10 @@ class Son:
     def lire_audio(self, nom_fichier):
         pygame.mixer.music.load(nom_fichier)
         pygame.mixer.music.play()
+        
+    def fermer_audio(self,nom_fichier):
+        pygame.mixer.music.load(nom_fichier)
+        pygame.mixer.music.stop()
 
 
 #==================================================================================================================

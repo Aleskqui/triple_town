@@ -198,8 +198,9 @@ class Items:
             "A": pygame.image.load("triple_town/img/arbre.png").convert_alpha(),
         }
 
-    def liste(self):
+    def liste(self,repetitions=10):
         self.liste_items = ["P", "R", "E", "H", "A"]  # Exemple avec seulement deux pièces
+        self.liste_items *= repetitions
         random.shuffle(self.liste_items)
         return self.liste_items
 

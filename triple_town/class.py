@@ -126,28 +126,28 @@ class Grille:
         if x < self.taille_x and y < self.taille_y:
             self.grille[x, y] = element
 
-    # Supprime un élément à une position donnée dans la grille
-    def supprimer_elements(self, x, y, taille):
-        for i in range(x - taille + 1, x + 1):
-            for j in range(y - taille + 1, y + 1):
-                if 0 <= i < self.taille_x and 0 <= j < self.taille_y:
-                    self.grille[i, j] = None
-
     # Vérifie s'il y a un alignement de 3 éléments identiques (horizontalement ou verticalement) à partir de la position (x, y).
-    # Elle renvoie l'élément aligné et la taille de l'alignement (3 dans ce cas).
+    # Elle renvoie les positions des éléments alignés s'il y a un alignement de 3, sinon renvoie None.
     def verifier_alignement(self, x, y):
+        # Vérifier l'alignement horizontal
         if x + 2 < self.taille_x and self.grille[x, y] == self.grille[x + 1, y] == self.grille[x + 2, y]:
-            return self.grille[x, y], 3
+            return [(x, y), (x + 1, y), (x + 2, y)]
         # Vérifier l'alignement vertical
         if y + 2 < self.taille_y and self.grille[x, y] == self.grille[x, y + 1] == self.grille[x, y + 2]:
-            return self.grille[x, y], 3
+            return [(x, y), (x, y + 1), (x, y + 2)]
         # Vérifier l'alignement diagonal (descendant)
         if x + 2 < self.taille_x and y + 2 < self.taille_y and self.grille[x, y] == self.grille[x + 1, y + 1] == self.grille[x + 2, y + 2]:
-            return self.grille[x, y], 3
+            return [(x, y), (x + 1, y + 1), (x + 2, y + 2)]
         # Vérifier l'alignement diagonal (ascendant)
         if x + 2 < self.taille_x and y - 2 >= 0 and self.grille[x, y] == self.grille[x + 1, y - 1] == self.grille[x + 2, y - 2]:
-            return self.grille[x, y], 3
-        return None, 0
+            return [(x, y), (x + 1, y - 1), (x + 2, y - 2)]
+        return None
+
+    # Méthode pour supprimer les éléments de la grille à partir des positions spécifiées
+    def supprimer_elements_alignes(self, positions):
+        for pos in positions:
+            x, y = pos
+            self.grille[x, y] = None
 
     def afficher_grille_console(self):
         # Affiche la grille dans la console
@@ -206,6 +206,15 @@ class Items:
 
     def suivant(self):
         return self.liste_items[0]
+    
+
+    def enlever_images_alignees(self, positions_alignement):
+        for pos in positions_alignement:
+            x, y = pos
+            for i in range(len(self.positions_curseur)):
+                if (x, y) in self.positions_curseur[i]:
+                    del self.positions_curseur[i]
+                    break   
 
 
 #==================================================================================================================
@@ -275,6 +284,15 @@ class Game:
                             self.piece_suivante = self.liste_items.pop(0)
                         else:
                             self.piece_suivante = None
+
+
+            # SUPPRIMER ALIGNEMENT 
+            for y in range(self.grille.taille_y):
+                for x in range(self.grille.taille_x):
+                    positions_alignement = self.grille.verifier_alignement(x, y)
+                    if positions_alignement:
+                        self.grille.supprimer_elements_alignes(positions_alignement) # En console 
+                        self.items.enlever_images_alignees(positions_alignement)  # piur enlever les images alignés affichées sur le jeu
 
             # ------------------------------------------------------------------------------
             fond_jeu = pygame.image.load("triple_town/img/fond.jpg")

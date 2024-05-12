@@ -2,6 +2,7 @@ import pygame
 import random
 import numpy as np
 import pygame.mixer
+import webbrowser # Pour acceder au site internet
 
 
 pygame.display.set_caption("Triple Town")
@@ -25,7 +26,11 @@ class Accueil:
 
         # Bouton Règles
         self.btn_regles = pygame.image.load("triple_town/img/btn_regles.png")
-        self.pos_regles = self.btn_regles.get_rect(topleft=(320, 425))  # On récupère l'emplacement (le rectangle rect) du btn règles
+        self.pos_regles = self.btn_regles.get_rect(topleft=(350, 425))  # On récupère l'emplacement (le rectangle rect) du btn règles
+
+        # Bouton Règles
+        self.btn_site = pygame.image.load("triple_town/img/btn-site.png")
+        self.pos_site = self.btn_regles.get_rect(topleft=(520, 425))  # On récupère l'emplacement (le rectangle rect) du btn règles
 
         # Bouton Retour
         self.btn_retour = pygame.image.load("triple_town/img/retour.png")
@@ -40,7 +45,8 @@ class Accueil:
     def afficher(self):
         self.screen.blit(self.lancement, (0, 0))
         self.screen.blit(self.btn_play, (400, 300))
-        self.screen.blit(self.btn_regles, (320, 425))
+        self.screen.blit(self.btn_regles, (350, 425))
+        self.screen.blit(self.btn_site, (520, 425))
         self.son.lire_audio("triple_town/sounds/accueil.mp3")
         pygame.display.flip()
 
@@ -61,6 +67,10 @@ class Accueil:
                     self.screen.blit(self.regles, (0, 0))  # Si c'est le cas on affiche les règles
                     self.screen.blit(self.btn_retour, (890, 20))
                     pygame.display.flip()
+
+                # On vérifie si le btn site web est cliqué
+                elif self.pos_site.collidepoint(mouse_pos):
+                    webbrowser.open("file:///C:/Users/berna/Documents/projet/site/index.html") # On ouvre notre site web (lien à changer en fonction de la machine)
 
                 elif self.pos_retour.collidepoint(mouse_pos):
                     self.afficher()

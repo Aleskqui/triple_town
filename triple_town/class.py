@@ -2,21 +2,20 @@ import pygame
 import random
 import numpy as np
 import pygame.mixer
-import webbrowser # Pour acceder au site internet
-
+import webbrowser  # Pour accéder au site internet
 
 pygame.display.set_caption("Triple Town")
 
 
-#==================================================================================================================
-#===============================================     ACCUEIL     ==================================================
-#==================================================================================================================
+# ==================================================================================================================
+# ===============================================     ACCUEIL     ==================================================
+# ==================================================================================================================
 
 
 class Accueil:
 
     def __init__(self):
-        self.screen = pygame.display.set_mode((1000, 750))
+        self.screen = pygame.display.set_mode((1000, 700))  # Ajustez la taille de la fenêtre ici
         # Ecran d'accueil
         self.lancement = pygame.image.load("triple_town/img/home.png")
 
@@ -28,13 +27,13 @@ class Accueil:
         self.btn_regles = pygame.image.load("triple_town/img/btn_regles.png")
         self.pos_regles = self.btn_regles.get_rect(topleft=(350, 425))  # On récupère l'emplacement (le rectangle rect) du btn règles
 
-        # Bouton Règles
+        # Bouton Site Web
         self.btn_site = pygame.image.load("triple_town/img/btn-site.png")
-        self.pos_site = self.btn_regles.get_rect(topleft=(520, 425))  # On récupère l'emplacement (le rectangle rect) du btn règles
+        self.pos_site = self.btn_site.get_rect(topleft=(520, 425))  # On récupère l'emplacement (le rectangle rect) du btn site web
 
         # Bouton Retour
         self.btn_retour = pygame.image.load("triple_town/img/retour.png")
-        self.pos_retour = self.btn_retour.get_rect(topleft=(890, 20))  # On récupère l'emplacement (le rectangle rect) du btn regles
+        self.pos_retour = self.btn_retour.get_rect(topleft=(890, 20))  # On récupère l'emplacement (le rectangle rect) du btn retour
 
         # Règles
         self.regles = pygame.image.load("triple_town/img/regles.png")
@@ -70,7 +69,7 @@ class Accueil:
 
                 # On vérifie si le btn site web est cliqué
                 elif self.pos_site.collidepoint(mouse_pos):
-                    webbrowser.open("file:///C:/Users/berna/Documents/projet/site/index.html") # On ouvre notre site web (lien à changer en fonction de la machine)
+                    webbrowser.open("file:///C:/Users/guill/OneDrive/Documents/site/index.html")  # On ouvre notre site web (lien à changer en fonction de la machine)
 
                 elif self.pos_retour.collidepoint(mouse_pos):
                     self.afficher()
@@ -78,9 +77,9 @@ class Accueil:
         return True  # L'écran d'accueil reste affiché
 
 
-#==================================================================================================================
-#===============================================     SONS    ===================================================
-#==================================================================================================================
+# ==================================================================================================================
+# ===============================================     SONS    ===================================================
+# ==================================================================================================================
 
 
 class Son:
@@ -92,13 +91,12 @@ class Son:
         pygame.mixer.music.play()
 
     def fermer_audio(self, nom_fichier):
-        pygame.mixer.music.load(nom_fichier)
         pygame.mixer.music.stop()
 
 
-#==================================================================================================================
-#===============================================     GRILLE     ===================================================
-#==================================================================================================================
+# ==================================================================================================================
+# ===============================================     GRILLE     ===================================================
+# ==================================================================================================================
 
 
 class Grille:
@@ -159,7 +157,6 @@ class Grille:
             x, y = pos
             self.grille[x, y] = None
 
-    
     def remplacer_alignement(self):
         for y in range(self.taille_y):
             for x in range(self.taille_x):
@@ -211,7 +208,6 @@ class Grille:
                         if len(positions_alignement) >= 3:  # Au moins trois châteaux pour former un château enchanté
                             self.supprimer_elements_alignes(positions_alignement)
                             self.placer_element("En", x, y)  # Remplacer l'alignement par un château enchanté
-    
 
     def afficher_grille_console(self):
         # Affiche la grille dans la console
@@ -229,11 +225,11 @@ class Grille:
             print(f"Panier: {self.panier}")
 
 
-#==================================================================================================================
-#===============================================     ITEMS     ====================================================
-#==================================================================================================================
+# ==================================================================================================================
+# ===============================================     ITEMS     ====================================================
+# ==================================================================================================================
 
- 
+
 class Items:
 
     def __init__(self):
@@ -266,7 +262,7 @@ class Items:
             "Ba": pygame.image.load("triple_town/img/basilique.png").convert_alpha()
         } """
 
-    def liste(self,repetitions=10):
+    def liste(self, repetitions=10):
         self.liste_items = ["P", "R", "E", "H", "A"]  # Exemple avec seulement deux pièces
         self.liste_items *= repetitions
         random.shuffle(self.liste_items)
@@ -274,7 +270,6 @@ class Items:
 
     def suivant(self):
         return self.liste_items[0]
-    
 
     def enlever_images_alignees(self, positions_alignement):
         for pos in positions_alignement:
@@ -282,12 +277,12 @@ class Items:
             for i in range(len(self.positions_curseur)):
                 if (x, y) in self.positions_curseur[i]:
                     del self.positions_curseur[i]
-                    break   
+                    break
 
 
-#==================================================================================================================
-#===============================================     GAME     =====================================================
-#==================================================================================================================
+# ==================================================================================================================
+# ===============================================     GAME     =====================================================
+# ==================================================================================================================
 
 
 class Game:
@@ -306,6 +301,7 @@ class Game:
         self.btn_retour = pygame.image.load("triple_town/img/retour.png")
         self.pos_retour = self.btn_retour.get_rect(topleft=(890, 20))  # On récupère l'emplacement (le rectangle rect) du btn retour
         self.son = Son()  # Ajout du lecteur audio
+        self.retour_accueil_demande = False  # Nouvelle variable pour suivre si le retour à l'écran d'accueil est demandé
 
     def score(self, compt):
 
@@ -313,6 +309,10 @@ class Game:
         font = pygame.font.Font(None, 36)
         score_text = font.render(f"Score: {compt}", True, (255, 255, 0))
         self.screen.blit(score_text, (800, 120))
+
+    def bouton_retour(self, mouse_pos):
+        if self.pos_retour.collidepoint(mouse_pos):
+            self.retour_accueil_demande = True  # Définir la variable à True lorsque le bouton "Retour" est cliqué
 
     def jeu(self):
         self.son.lire_audio("triple_town/sounds/aventure.mp3")
@@ -335,8 +335,7 @@ class Game:
 
                     # Gestion des clics dans la zone grise
                     if mouse_pos[0] > 750:  # zone score etc...
-                        if self.accueil.pos_retour.collidepoint(mouse_pos):
-                            self.accueil.afficher()
+                       self.bouton_retour(mouse_pos)  # Gestion du clic sur le bouton "Retour"
 
                     # Gestion des clics dans la zone de jeu
                     else:
@@ -404,34 +403,43 @@ class Game:
 
             if self.piece_suivante:
                 font = pygame.font.Font(None, 36)
-                texte_suivant = font.render("Item à placer :", True, (255, 255, 0))
-                self.screen.blit(texte_suivant, (800, 180))
-                self.screen.blit(curseur, (850, 210))
-            # ------------------------------------------------------------------------------
+                texte_suivant = font.render("Suivant :", True, (255, 255, 255))
+                self.screen.blit(texte_suivant, (800, 10))
+
+                surface_suivante = self.items.piece_initiales[self.piece_suivante]  # Surface de la pièce suivante
+                self.screen.blit(surface_suivante, (800, 50))
 
             self.score(compt)
 
             pygame.display.flip()
 
+            if self.retour_accueil_demande:
+                self.retour_accueil_demande = False  # Réinitialiser la variable après le retour à l'accueil
+                self.son.fermer_audio("triple_town/sounds/aventure.mp3")  # Arrêter la musique de fond
+                self.accueil.afficher()  # Revenir à l'écran d'accueil
+                while self.accueil.en_cours():
+                    pygame.time.Clock().tick(30)  # Limiter le taux de rafraîchissement pour économiser les ressources
+
         pygame.quit()
 
+# ==================================================================================================================
+# ===============================================     MAIN     =====================================================
+# ==================================================================================================================
 
-#==================================================================================================================
-#===============================================     MAIN     =====================================================
-#==================================================================================================================
-
-
-if __name__ == '__main__':
+if __name__ == "__main__":
     pygame.init()
-    accueil = Accueil()
-    running = False
-    regles = False
-    accueil.afficher()
-
-    while accueil.en_cours():
-        pass
-
     game = Game()
-    game.jeu()
-
-    pygame.quit()
+    while True:
+        # Effacer le contenu de l'écran avant d'afficher l'écran d'accueil
+        game.screen.fill((0, 0, 0))  # Remplir l'écran avec une couleur noire
+        
+        game.accueil.afficher()
+        while game.accueil.en_cours():
+            pygame.time.Clock().tick(30)  # Limiter le taux de rafraîchissement pour économiser les ressources
+        
+        # Si le retour à l'accueil est demandé, arrêter la musique de fond
+        if game.retour_accueil_demande:
+            game.son.fermer_audio("triple_town/sounds/aventure.mp3")  
+            game.retour_accueil_demande = False  # Réinitialiser la variable après le retour à l'accueil
+        
+        game.jeu()  # Lancer le jeu

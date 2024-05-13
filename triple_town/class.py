@@ -15,9 +15,10 @@ pygame.display.set_caption("Triple Town")
 class Accueil:
 
     def __init__(self):
-        self.screen = pygame.display.set_mode((1000, 700))  # Ajustez la taille de la fenêtre ici
+        self.screen = pygame.display.set_mode((1000, 750))  # Ajustez la taille de la fenêtre ici
         # Ecran d'accueil
         self.lancement = pygame.image.load("triple_town/img/home.png")
+        self.lancement = pygame.transform.scale(self.lancement, (1000, 750))
 
         # Bouton Play
         self.btn_play = pygame.image.load("triple_town/img/play.png")
@@ -37,6 +38,7 @@ class Accueil:
 
         # Règles
         self.regles = pygame.image.load("triple_town/img/regles.png")
+        self.regles = pygame.transform.scale(self.regles, (1000, 750))
 
         # Son
         self.son = Son()  # Ajout du lecteur audio

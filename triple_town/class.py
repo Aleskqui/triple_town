@@ -159,6 +159,60 @@ class Grille:
             x, y = pos
             self.grille[x, y] = None
 
+    
+    def remplacer_alignement(self):
+        for y in range(self.taille_y):
+            for x in range(self.taille_x):
+                positions_alignement = self.verifier_alignement(x, y)
+                if positions_alignement:
+                    element = self.grille[x, y]
+
+                    if element == "P":
+                        if len(positions_alignement) >= 2:  # Au moins deux pierres pour former un rocher
+                            self.supprimer_elements_alignes(positions_alignement)
+                            self.placer_element("R", x, y)  # Remplacer l'alignement par un rocher
+
+                    elif element == "E":
+                        if len(positions_alignement) >= 3:  # Au moins trois églises pour former une basilique
+                            self.supprimer_elements_alignes(positions_alignement)
+                            self.placer_element("Ba", x, y)  # Remplacer l'alignement par une basilique
+
+                    elif element == "H":
+                        if len(positions_alignement) >= 3:  # Au moins trois herbes pour former un buisson
+                            self.supprimer_elements_alignes(positions_alignement)
+                            self.placer_element("B", x, y)  # Remplacer l'alignement par un buisson
+
+                    elif element == "B":
+                        if len(positions_alignement) >= 3:  # Au moins trois buissons pour former un arbre
+                            self.supprimer_elements_alignes(positions_alignement)
+                            self.placer_element("A", x, y)  # Remplacer l'alignement par un arbre
+
+                    elif element == "A":
+                        if len(positions_alignement) >= 3:  # Au moins trois arbres pour former une maison
+                            self.supprimer_elements_alignes(positions_alignement)
+                            self.placer_element("M", x, y)  # Remplacer l'alignement par une maison
+
+                    elif element == "M":
+                        if len(positions_alignement) >= 3:  # Au moins trois maisons pour former une demeure
+                            self.supprimer_elements_alignes(positions_alignement)
+                            self.placer_element("D", x, y)  # Remplacer l'alignement par une demeure
+
+                    elif element == "D":
+                        if len(positions_alignement) >= 3:  # Au moins trois demeures pour former une villa
+                            self.supprimer_elements_alignes(positions_alignement)
+                            self.placer_element("V", x, y)  # Remplacer l'alignement par une villa
+
+                    elif element == "V":
+                        if len(positions_alignement) >= 3:  # Au moins trois villas pour former un château
+                            self.supprimer_elements_alignes(positions_alignement)
+                            self.placer_element("Ch", x, y)  # Remplacer l'alignement par un château
+
+                    elif element == "Ch":
+                        if len(positions_alignement) >= 3:  # Au moins trois châteaux pour former un château enchanté
+                            self.supprimer_elements_alignes(positions_alignement)
+                            self.placer_element("En", x, y)  # Remplacer l'alignement par un château enchanté
+    
+
     def afficher_grille_console(self):
         # Affiche la grille dans la console
         for y in range(self.taille_y):
@@ -179,7 +233,7 @@ class Grille:
 #===============================================     ITEMS     ====================================================
 #==================================================================================================================
 
-
+ 
 class Items:
 
     def __init__(self):
@@ -205,8 +259,12 @@ class Items:
             "E": pygame.image.load("triple_town/img/eglise.png").convert_alpha(),
             "H": pygame.image.load("triple_town/img/herbe.png").convert_alpha(),
             "B": pygame.image.load("triple_town/img/buisson.png").convert_alpha(),
-            "A": pygame.image.load("triple_town/img/arbre.png").convert_alpha(),
+            "A": pygame.image.load("triple_town/img/arbre.png").convert_alpha()
         }
+        """
+        self.piece_secondaires = {
+            "Ba": pygame.image.load("triple_town/img/basilique.png").convert_alpha()
+        } """
 
     def liste(self,repetitions=10):
         self.liste_items = ["P", "R", "E", "H", "A"]  # Exemple avec seulement deux pièces
@@ -303,6 +361,9 @@ class Game:
                     if positions_alignement:
                         self.grille.supprimer_elements_alignes(positions_alignement) # En console 
                         self.items.enlever_images_alignees(positions_alignement)  # piur enlever les images alignés affichées sur le jeu
+                        self.grille.remplacer_alignement()
+            
+            self.grille.remplacer_alignement()
 
             # ------------------------------------------------------------------------------
             fond_jeu = pygame.image.load("triple_town/img/fond.jpg")

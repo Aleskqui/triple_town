@@ -103,24 +103,52 @@ class Son:
 
 class Grille:
     def __init__(self, taille_x, taille_y):
+
+        self.pierre = pygame.image.load("triple_town/img/pierre.png").convert_alpha()
+        self.rocher = pygame.image.load("triple_town/img/rocher.png").convert_alpha()
+        self.eglise = pygame.image.load("triple_town/img/eglise.png").convert_alpha()
+        self.cathedrale = pygame.image.load("triple_town/img/cathedrale.png").convert_alpha()
+        self.herbe = pygame.image.load("triple_town/img/herbe.png").convert_alpha()
+        self.buisson = pygame.image.load("triple_town/img/buisson.png").convert_alpha()
+        self.arbre = pygame.image.load("triple_town/img/arbre.png").convert_alpha()
+        self.cabane = pygame.image.load("triple_town/img/cabane.png").convert_alpha()
+        self.maison = pygame.image.load("triple_town/img/maison.png").convert_alpha()
+        self.villa = pygame.image.load("triple_town/img/villa.png").convert_alpha()
+        self.chateau = pygame.image.load("triple_town/img/chateau.png").convert_alpha()
+        self.chateaumagique = pygame.image.load("triple_town/img/chateaumagique.png").convert_alpha()
+    
         self.taille_x = taille_x
         self.taille_y = taille_y
         self.screen = pygame.display.set_mode((1000, 750))
         self.cases = []
         self.grille = np.zeros((taille_x, taille_y), dtype=object)
         self.panier = None
-        taille_case = 750 / taille_x
+        self.taille_case = 750 / taille_x
         for y in range(taille_y):  # nombre de lignes
             for x in range(taille_x):  # nombre de colonnes
-                case_x = x * taille_case
-                case_y = y * taille_case
-                case = ((case_x, case_y), (case_x + taille_case, case_y), (case_x + taille_case, case_y + taille_case),
-                        (case_x, case_y + taille_case))
+                case_x = x * self.taille_case
+                case_y = y * self.taille_case
+                case = ((case_x, case_y), (case_x + self.taille_case, case_y), (case_x + self.taille_case, case_y + self.taille_case),
+                        (case_x, case_y + self.taille_case))
                 self.cases.append(case)
 
     def afficher(self):
         for i in range(len(self.cases)):
             pygame.draw.polygon(self.screen, (0, 0, 0), self.cases[i], 2)
+
+        # Parcourir la grille pour afficher les éléments
+        for y in range(self.taille_y):
+            for x in range(self.taille_x):
+                element = self.grille[x, y]
+                if element is not None:
+                    # Dessiner l'image de l'élément à sa position
+                    position_x = x * self.taille_case + self.taille_case // 2
+                    position_y = y * self.taille_case + self.taille_case // 2
+                    image_element = self.get_image_element(element)  # Fonction à créer pour obtenir l'image correspondant à l'élément
+                    if image_element is not None :
+                        self.screen.blit(image_element, (position_x, position_y))
+        pygame.display.flip()
+        
 
     def case(self):
         for event in pygame.event.get():
@@ -210,6 +238,8 @@ class Grille:
                         if len(positions_alignement) >= 3:  # Au moins trois châteaux pour former un château enchanté
                             self.supprimer_elements_alignes(positions_alignement)
                             self.placer_element("En", x, y)  # Remplacer l'alignement par un château enchanté
+        self.afficher()
+
 
     def afficher_grille_console(self):
         # Affiche la grille dans la console
@@ -226,6 +256,36 @@ class Grille:
         if self.panier is not None:
             print(f"Panier: {self.panier}")
 
+    
+    def get_image_element(self, element):
+        if element == "P":
+            return self.pierre
+        elif element == "R":
+            return self.rocher
+        elif element == "E":
+            return self.eglise
+        elif element == "Ba":
+            return self.cathedrale
+        elif element == "H":
+            return self.herbe
+        elif element == "B":
+            return self.buisson
+        elif element == "A":
+            return self.arbre
+        elif element == "C":
+            return self.cabane
+        elif element == "M":
+            return self.maison
+        elif element == "V":
+            return self.villa
+        elif element == "Ch":
+            return self.chateau
+        elif element == "ChM":
+            return self.chateaumagique
+        else:
+            return None
+
+
 
 # ==================================================================================================================
 # ===============================================     ITEMS     ====================================================
@@ -235,18 +295,7 @@ class Grille:
 class Items:
 
     def __init__(self):
-        self.pierre = pygame.image.load("triple_town/img/pierre.png").convert_alpha()
-        self.rocher = pygame.image.load("triple_town/img/rocher.png").convert_alpha()
-        self.eglise = pygame.image.load("triple_town/img/eglise.png").convert_alpha()
-        self.cathedrale = pygame.image.load("triple_town/img/cathedrale.png").convert_alpha()
-        self.herbe = pygame.image.load("triple_town/img/herbe.png").convert_alpha()
-        self.buisson = pygame.image.load("triple_town/img/buisson.png").convert_alpha()
-        self.arbre = pygame.image.load("triple_town/img/arbre.png").convert_alpha()
-        self.cabane = pygame.image.load("triple_town/img/cabane.png").convert_alpha()
-        self.maison = pygame.image.load("triple_town/img/maison.png").convert_alpha()
-        self.villa = pygame.image.load("triple_town/img/villa.png").convert_alpha()
-        self.chateau = pygame.image.load("triple_town/img/chateau.png").convert_alpha()
-        self.chateaumagique = pygame.image.load("triple_town/img/chateaumagique.png").convert_alpha()
+
 
         self.liste_items = []
         self.positions_curseur = []  # Liste pour stocker les positions du curseur
@@ -259,10 +308,10 @@ class Items:
             "B": pygame.image.load("triple_town/img/buisson.png").convert_alpha(),
             "A": pygame.image.load("triple_town/img/arbre.png").convert_alpha()
         }
-        """
+ 
         self.piece_secondaires = {
-            "Ba": pygame.image.load("triple_town/img/basilique.png").convert_alpha()
-        } """
+            "Ba": pygame.image.load("triple_town/img/cathedrale.png").convert_alpha()
+        }
 
     def liste(self, repetitions=10):
         self.liste_items = ["P", "R", "E", "H", "A"]  # Exemple avec seulement deux pièces
@@ -273,13 +322,6 @@ class Items:
     def suivant(self):
         return self.liste_items[0]
 
-    def enlever_images_alignees(self, positions_alignement):
-        for pos in positions_alignement:
-            x, y = pos
-            for i in range(len(self.positions_curseur)):
-                if (x, y) in self.positions_curseur[i]:
-                    del self.positions_curseur[i]
-                    break
 
 
 # ==================================================================================================================
@@ -308,9 +350,9 @@ class Game:
     def score(self, compt):
 
         # Affichage du score courant
-        font = pygame.font.Font(None, 36)
+        font = pygame.font.Font(None, 35)
         score_text = font.render(f"Score: {compt}", True, (255, 255, 0))
-        self.screen.blit(score_text, (800, 120))
+        self.screen.blit(score_text, (775, 250))
 
     def bouton_retour(self, mouse_pos):
         if self.pos_retour.collidepoint(mouse_pos):
@@ -360,11 +402,10 @@ class Game:
                 for x in range(self.grille.taille_x):
                     positions_alignement = self.grille.verifier_alignement(x, y)
                     if positions_alignement:
-                        self.grille.supprimer_elements_alignes(positions_alignement) # En console 
-                        self.items.enlever_images_alignees(positions_alignement)  # piur enlever les images alignés affichées sur le jeu
+                        self.grille.supprimer_elements_alignes(positions_alignement) 
                         self.grille.remplacer_alignement()
+                        self.grille.afficher()  # <-- Mettre à jour l'affichage de la grille dans la fenêtre graphique
             
-            self.grille.remplacer_alignement()
 
             # ------------------------------------------------------------------------------
             fond_jeu = pygame.image.load("triple_town/img/fond.jpg")
@@ -404,12 +445,14 @@ class Game:
                 compt += 1
 
             if self.piece_suivante:
-                font = pygame.font.Font(None, 36)
-                texte_suivant = font.render("Suivant :", True, (255, 255, 255))
-                self.screen.blit(texte_suivant, (800, 10))
+                font = pygame.font.Font(None, 30)
+                texte_suivant = font.render("Pièce à placer :", True, (255, 255, 255))
+                self.screen.blit(texte_suivant, (775, 200))
 
                 surface_suivante = self.items.piece_initiales[self.piece_suivante]  # Surface de la pièce suivante
-                self.screen.blit(surface_suivante, (800, 50))
+                surface_suivante = pygame.transform.scale(surface_suivante, (35, 35))
+                self.screen.blit(surface_suivante, (930, 190))
+                
 
             self.score(compt)
 
@@ -436,8 +479,8 @@ if __name__ == "__main__":
         game.screen.fill((0, 0, 0))  # Remplir l'écran avec une couleur noire
         
         game.accueil.afficher()
-        while game.accueil.en_cours():
-            pygame.time.Clock().tick(30)  # Limiter le taux de rafraîchissement pour économiser les ressources
+        #while game.accueil.en_cours():
+            #pygame.time.Clock().tick(30)  # Limiter le taux de rafraîchissement pour économiser les ressources
         
         # Si le retour à l'accueil est demandé, arrêter la musique de fond
         if game.retour_accueil_demande:

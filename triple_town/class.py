@@ -1,4 +1,3 @@
-
 import pygame
 import random
 import numpy as np
@@ -199,47 +198,57 @@ class Grille:
                         if len(positions_alignement) >= 2:  # Au moins deux pierres pour former un rocher
                             self.supprimer_elements_alignes(positions_alignement)
                             self.placer_element("R", x, y)  # Remplacer l'alignement par un rocher
+                            self.screen.blit(self.get_image_element(element), (x*self.taille_case + self.taille_case //2, y * self.taille_case + self.taille_case //2))
 
                     elif element == "E":
                         if len(positions_alignement) >= 3:  # Au moins trois églises pour former une basilique
                             self.supprimer_elements_alignes(positions_alignement)
                             self.placer_element("Ba", x, y)  # Remplacer l'alignement par une basilique
+                            self.screen.blit(self.get_image_element(element), (x*self.taille_case + self.taille_case //2, y * self.taille_case + self.taille_case //2))
 
                     elif element == "H":
                         if len(positions_alignement) >= 3:  # Au moins trois herbes pour former un buisson
                             self.supprimer_elements_alignes(positions_alignement)
                             self.placer_element("B", x, y)  # Remplacer l'alignement par un buisson
+                            self.screen.blit(self.get_image_element(element), (x*self.taille_case + self.taille_case //2, y * self.taille_case + self.taille_case //2))
 
                     elif element == "B":
                         if len(positions_alignement) >= 3:  # Au moins trois buissons pour former un arbre
                             self.supprimer_elements_alignes(positions_alignement)
                             self.placer_element("A", x, y)  # Remplacer l'alignement par un arbre
+                            self.screen.blit(self.get_image_element(element), (x*self.taille_case + self.taille_case //2, y * self.taille_case + self.taille_case //2))
 
                     elif element == "A":
                         if len(positions_alignement) >= 3:  # Au moins trois arbres pour former une maison
                             self.supprimer_elements_alignes(positions_alignement)
                             self.placer_element("M", x, y)  # Remplacer l'alignement par une maison
+                            self.screen.blit(self.get_image_element(element), (x*self.taille_case + self.taille_case //2, y * self.taille_case + self.taille_case //2))
 
                     elif element == "M":
                         if len(positions_alignement) >= 3:  # Au moins trois maisons pour former une demeure
                             self.supprimer_elements_alignes(positions_alignement)
                             self.placer_element("D", x, y)  # Remplacer l'alignement par une demeure
+                            self.screen.blit(self.get_image_element(element), (x*self.taille_case + self.taille_case //2, y * self.taille_case + self.taille_case //2))
 
                     elif element == "D":
                         if len(positions_alignement) >= 3:  # Au moins trois demeures pour former une villa
                             self.supprimer_elements_alignes(positions_alignement)
                             self.placer_element("V", x, y)  # Remplacer l'alignement par une villa
+                            self.screen.blit(self.get_image_element(element), (x*self.taille_case + self.taille_case //2, y * self.taille_case + self.taille_case //2))
 
                     elif element == "V":
                         if len(positions_alignement) >= 3:  # Au moins trois villas pour former un château
                             self.supprimer_elements_alignes(positions_alignement)
                             self.placer_element("Ch", x, y)  # Remplacer l'alignement par un château
+                            self.screen.blit(self.get_image_element(element), (x*self.taille_case + self.taille_case //2, y * self.taille_case + self.taille_case //2))
 
                     elif element == "Ch":
                         if len(positions_alignement) >= 3:  # Au moins trois châteaux pour former un château enchanté
                             self.supprimer_elements_alignes(positions_alignement)
                             self.placer_element("En", x, y)  # Remplacer l'alignement par un château enchanté
-        self.afficher()
+                            self.screen.blit(self.get_image_element(element), (x*self.taille_case + self.taille_case //2, y * self.taille_case + self.taille_case //2))
+
+        pygame.display.flip()
 
 
     def afficher_grille_console(self):
@@ -310,9 +319,6 @@ class Items:
             "A": pygame.image.load("triple_town/img/arbre.png").convert_alpha()
         }
  
-        self.piece_secondaires = {
-            "Ba": pygame.image.load("triple_town/img/cathedrale.png").convert_alpha()
-        }
 
     def liste(self, repetitions=10):
         self.liste_items = ["P", "R", "E", "H", "A"]  # Exemple avec seulement deux pièces
@@ -361,16 +367,14 @@ class Game:
 
     def jeu(self):
         self.son.lire_audio("triple_town/sounds/aventure.mp3")
-        positions_curseur = []
+
         self.accueil = Accueil()
 
         while self.running:
-
             curseur = self.items.piece_initiales[self.piece_suivante]
             compt = 0
 
-            for pos in positions_curseur:
-                self.screen.blit(curseur, pos)
+
 
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -380,22 +384,24 @@ class Game:
 
                     # Gestion des clics dans la zone grise
                     if mouse_pos[0] > 750:  # zone score etc...
-                       self.bouton_retour(mouse_pos)  # Gestion du clic sur le bouton "Retour"
+                        self.bouton_retour(mouse_pos)  # Gestion du clic sur le bouton "Retour"
 
                     # Gestion des clics dans la zone de jeu
                     else:
                         # On calcule les coordonnées de la case avec la position de la souris
                         case_x = mouse_pos[0] // (750 / self.grille.taille_x)
                         case_y = mouse_pos[1] // (750 / self.grille.taille_y)
-                        self.grille.placer_element(self.piece_suivante[0], int(case_x), int(case_y))  # Placer l'élément sur la grille
-                        self.grille.afficher_grille_console()  # Ajouter la pièce dans la grille de la console
-                        positions_curseur.append(event.pos)
-                        compt += 1
-                        if self.liste_items:
-                            self.pieces_placees.append(self.piece_suivante)
-                            self.piece_suivante = self.liste_items.pop(0)
-                        else:
-                            self.piece_suivante = None
+                        # Vérifier si une pièce est déjà placée à cet emplacement
+                        if (case_x, case_y) not in self.pieces_placees:
+                            self.grille.placer_element(self.piece_suivante[0], int(case_x), int(case_y))  # Placer l'élément sur la grille
+                            self.grille.afficher_grille_console()  # Ajouter la pièce dans la grille de la console
+
+                            self.pieces_placees.append((case_x, case_y))  # Ajouter l'emplacement de la pièce à la liste des pièces placées
+                            compt += 1
+                            if self.liste_items:
+                                self.piece_suivante = self.liste_items.pop(0)
+                            else:
+                                self.piece_suivante = None
 
 
             # SUPPRIMER ALIGNEMENT 
@@ -408,7 +414,7 @@ class Game:
                         self.grille.afficher()  # <-- Mettre à jour l'affichage de la grille dans la fenêtre graphique
             
 
-            # ------------------------------------------------------------------------------
+
             fond_jeu = pygame.image.load("triple_town/img/fond.jpg")
             fond_jeu_r = pygame.transform.scale(fond_jeu, (750, 750))
             self.screen.blit(fond_jeu_r, (0, 0))
@@ -418,11 +424,11 @@ class Game:
             self.screen.blit(fond_score_r, (750, 0))
 
             self.screen.blit(self.btn_retour, (890, 20))
-            # ------------------------------------------------------------------------------
+
 
             self.grille.afficher()  # On affiche la grille
 
-            # ------------------------------------------------------------------------------
+
 
             partie_grise = (750, 0)
             if pygame.mouse.get_pos() < partie_grise:
@@ -436,12 +442,14 @@ class Game:
             else:
                 pygame.mouse.set_visible(True)
 
-            # Pour chaque endroit où l'on a cliqué
-            for i in range(min(len(positions_curseur), len(self.pieces_placees))):
-                pos = positions_curseur[i]  # On prend la position
-                piece = self.pieces_placees[i]  # On récupère la pièce que l'on a souhaité déposer
-                piece_surface = self.items.piece_initiales[piece]  # Récupérer la surface correspondante à partir du dictionnaire
-                self.screen.blit(piece_surface, pos)  # Dessiner la surface de la pièce à la position donnée
+           
+                # Récupérer la surface correspondante à partir du dictionnaire
+                if self.piece_suivante in self.items.piece_initiales:
+                    surface_suivante = self.items.piece_initiales[self.piece_suivante] # Dictionnaire piece initiale (voir classe Items)
+                else:
+                    surface_suivante = None
+
+
 
                 compt += 1
 

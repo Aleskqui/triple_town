@@ -121,7 +121,7 @@ class Grille:
         self.taille_y = taille_y
         self.screen = pygame.display.set_mode((1000, 750))
         self.cases = []
-        self.grille = np.full((taille_x, taille_y),None, dtype=object))
+        self.grille = np.full((taille_x, taille_y),None, dtype=object)
         self.panier = None
         self.taille_case = 750 / taille_x
         for y in range(taille_y):  # nombre de lignes
@@ -131,6 +131,7 @@ class Grille:
                 case = ((case_x, case_y), (case_x + self.taille_case, case_y), (case_x + self.taille_case, case_y + self.taille_case),
                         (case_x, case_y + self.taille_case))
                 self.cases.append(case)
+        self.derniere_position_cliquee = (0, 0)  # Initialisation de la dernière position cliquée
 
     def afficher(self):
         for i in range(len(self.cases)):
@@ -163,6 +164,8 @@ class Grille:
     def placer_element(self, element, x, y):
         if x < self.taille_x and y < self.taille_y:
             self.grille[x, y] = element
+            self.derniere_position_cliquee = (x, y)  # Enregistrer la position cliquée
+
 
     # Vérifie s'il y a un alignement de 3 éléments identiques (horizontalement ou verticalement) à partir de la position (x, y).
     # Elle renvoie les positions des éléments alignés s'il y a un alignement de 3, sinon renvoie None.
@@ -193,63 +196,38 @@ class Grille:
                 positions_alignement = self.verifier_alignement(x, y)
                 if positions_alignement:
                     element = self.grille[x, y]
+                    self.supprimer_elements_alignes(positions_alignement)
+                    
+                    dernier_x, dernier_y = self.derniere_position_cliquee  # Utilisez la dernière position cliquée
 
-                    if element == "P":
-                        if len(positions_alignement) >= 2:  # Au moins deux pierres pour former un rocher
-                            self.supprimer_elements_alignes(positions_alignement)
-                            self.placer_element("R", x, y)  # Remplacer l'alignement par un rocher
-                            self.screen.blit(self.get_image_element(element), (x*self.taille_case + self.taille_case //2, y * self.taille_case + self.taille_case //2))
+                    if element == "P" and len(positions_alignement) >= 2:
+                        self.placer_element("R", dernier_x, dernier_y)  # Remplacer l'alignement par un rocher
 
-                    elif element == "E":
-                        if len(positions_alignement) >= 3:  # Au moins trois églises pour former une basilique
-                            self.supprimer_elements_alignes(positions_alignement)
-                            self.placer_element("Ba", x, y)  # Remplacer l'alignement par une basilique
-                            self.screen.blit(self.get_image_element(element), (x*self.taille_case + self.taille_case //2, y * self.taille_case + self.taille_case //2))
+                    elif element == "E" and len(positions_alignement) >= 3:
+                        self.placer_element("Ba", dernier_x, dernier_y)  # Remplacer l'alignement par une basilique
 
-                    elif element == "H":
-                        if len(positions_alignement) >= 3:  # Au moins trois herbes pour former un buisson
-                            self.supprimer_elements_alignes(positions_alignement)
-                            self.placer_element("B", x, y)  # Remplacer l'alignement par un buisson
-                            self.screen.blit(self.get_image_element(element), (x*self.taille_case + self.taille_case //2, y * self.taille_case + self.taille_case //2))
+                    elif element == "H" and len(positions_alignement) >= 3:
+                        self.placer_element("B", dernier_x, dernier_y)  # Remplacer l'alignement par un buisson
 
-                    elif element == "B":
-                        if len(positions_alignement) >= 3:  # Au moins trois buissons pour former un arbre
-                            self.supprimer_elements_alignes(positions_alignement)
-                            self.placer_element("A", x, y)  # Remplacer l'alignement par un arbre
-                            self.screen.blit(self.get_image_element(element), (x*self.taille_case + self.taille_case //2, y * self.taille_case + self.taille_case //2))
+                    elif element == "B" and len(positions_alignement) >= 3:
+                        self.placer_element("A", dernier_x, dernier_y)  # Remplacer l'alignement par un arbre
 
-                    elif element == "A":
-                        if len(positions_alignement) >= 3:  # Au moins trois arbres pour former une maison
-                            self.supprimer_elements_alignes(positions_alignement)
-                            self.placer_element("M", x, y)  # Remplacer l'alignement par une maison
-                            self.screen.blit(self.get_image_element(element), (x*self.taille_case + self.taille_case //2, y * self.taille_case + self.taille_case //2))
+                    elif element == "A" and len(positions_alignement) >= 3:
+                        self.placer_element("M", dernier_x, dernier_y)  # Remplacer l'alignement par une maison
 
-                    elif element == "M":
-                        if len(positions_alignement) >= 3:  # Au moins trois maisons pour former une demeure
-                            self.supprimer_elements_alignes(positions_alignement)
-                            self.placer_element("D", x, y)  # Remplacer l'alignement par une demeure
-                            self.screen.blit(self.get_image_element(element), (x*self.taille_case + self.taille_case //2, y * self.taille_case + self.taille_case //2))
+                    elif element == "M" and len(positions_alignement) >= 3:
+                        self.placer_element("D", dernier_x, dernier_y)  # Remplacer l'alignement par une demeure
 
-                    elif element == "D":
-                        if len(positions_alignement) >= 3:  # Au moins trois demeures pour former une villa
-                            self.supprimer_elements_alignes(positions_alignement)
-                            self.placer_element("V", x, y)  # Remplacer l'alignement par une villa
-                            self.screen.blit(self.get_image_element(element), (x*self.taille_case + self.taille_case //2, y * self.taille_case + self.taille_case //2))
+                    elif element == "D" and len(positions_alignement) >= 3:
+                        self.placer_element("V", dernier_x, dernier_y)  # Remplacer l'alignement par une villa
 
-                    elif element == "V":
-                        if len(positions_alignement) >= 3:  # Au moins trois villas pour former un château
-                            self.supprimer_elements_alignes(positions_alignement)
-                            self.placer_element("Ch", x, y)  # Remplacer l'alignement par un château
-                            self.screen.blit(self.get_image_element(element), (x*self.taille_case + self.taille_case //2, y * self.taille_case + self.taille_case //2))
+                    elif element == "V" and len(positions_alignement) >= 3:
+                        self.placer_element("Ch", dernier_x, dernier_y)  # Remplacer l'alignement par un château
 
-                    elif element == "Ch":
-                        if len(positions_alignement) >= 3:  # Au moins trois châteaux pour former un château enchanté
-                            self.supprimer_elements_alignes(positions_alignement)
-                            self.placer_element("En", x, y)  # Remplacer l'alignement par un château enchanté
-                            self.screen.blit(self.get_image_element(element), (x*self.taille_case + self.taille_case //2, y * self.taille_case + self.taille_case //2))
+                    elif element == "Ch" and len(positions_alignement) >= 3:
+                        self.placer_element("En", dernier_x, dernier_y)  # Remplacer l'alignement par un château enchanté
 
         pygame.display.flip()
-
 
     def afficher_grille_console(self):
         # Affiche la grille dans la console

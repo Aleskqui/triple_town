@@ -326,6 +326,7 @@ class Game:
         self.liste_items = self.items.liste()  # On initialise la liste
         self.piece_suivante = self.liste_items.pop(0)  # Première pièce que l'on prend et supprime
         self.pieces_placees = []  # Liste pour stocker les positions des pièces déjà placées
+        self.compt = 0
 
         self.btn_retour = pygame.image.load("triple_town/img/retour.png")
         self.pos_retour = self.btn_retour.get_rect(topleft=(890, 20))  # On récupère l'emplacement (le rectangle rect) du btn retour
@@ -350,7 +351,7 @@ class Game:
 
         while self.running:
             curseur = self.items.piece_initiales[self.piece_suivante]
-            compt = 0
+            
 
 
 
@@ -375,7 +376,7 @@ class Game:
                             self.grille.afficher_grille_console()  # Ajouter la pièce dans la grille de la console
 
                             self.pieces_placees.append((case_x, case_y))  # Ajouter l'emplacement de la pièce à la liste des pièces placées
-                            compt += 1
+                            self.compt += 1
                             if self.liste_items:
                                 self.piece_suivante = self.liste_items.pop(0)
                             else:
@@ -388,6 +389,9 @@ class Game:
                     positions_alignement = self.grille.verifier_alignement(x, y)
                     if positions_alignement:
                         self.grille.supprimer_elements_alignes(positions_alignement) 
+                        for pos in positions_alignement:
+                            if pos in self.pieces_placees:
+                                self.pieces_placees.remove(pos)
                         self.grille.remplacer_alignement()
                         self.grille.afficher()  # <-- Mettre à jour l'affichage de la grille dans la fenêtre graphique
             
@@ -428,9 +432,6 @@ class Game:
                     surface_suivante = None
 
 
-
-                compt += 1
-
             if self.piece_suivante:
                 font = pygame.font.Font(None, 30)
                 texte_suivant = font.render("Pièce à placer :", True, (255, 255, 255))
@@ -441,7 +442,7 @@ class Game:
                 self.screen.blit(surface_suivante, (930, 190))
                 
 
-            self.score(compt)
+            self.score(self.compt)
 
             pygame.display.flip()
 

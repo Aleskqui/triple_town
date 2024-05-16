@@ -121,7 +121,7 @@ class Grille:
         self.taille_y = taille_y
         self.screen = pygame.display.set_mode((1000, 750))
         self.cases = []
-        self.grille = np.zeros((taille_x, taille_y), dtype=object)
+        self.grille = np.full((taille_x, taille_y),None, dtype=object))
         self.panier = None
         self.taille_case = 750 / taille_x
         for y in range(taille_y):  # nombre de lignes

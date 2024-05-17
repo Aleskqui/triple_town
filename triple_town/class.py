@@ -367,11 +367,10 @@ class Game:
     
     
     def afficher_game_over(self):
-        font = pygame.font.Font(None, 74)
-        game_over_text = font.render("Game Over", True, (255, 0, 0))
-        self.screen.blit(game_over_text, (350, 375))
+        game_over = pygame.image.load("triple_town/img/gameover.png")
+        self.screen.blit(game_over, (180, 200))
         pygame.display.flip()
-        pygame.time.wait(3000)  # Attendre 3 secondes avant de fermer le jeu
+        pygame.time.wait(5000)  # Attendre 3 secondes avant de fermer le jeu
 
     def jeu(self):
         self.son.lire_audio("triple_town/sounds/aventure.mp3")
@@ -412,7 +411,7 @@ class Game:
 
                             if self.grille.toutes_les_cases_occupees():
                                 self.afficher_game_over()
-                                self.running = False
+                                #self.running = False
 
 
             # SUPPRIMER ALIGNEMENT 
@@ -479,7 +478,7 @@ class Game:
                 self.son.fermer_audio("triple_town/sounds/aventure.mp3")  # Arrêter la musique de fond
                 self.accueil.afficher()  # Revenir à l'écran d'accueil
                 while self.accueil.en_cours():
-                    pygame.time.Clock().tick(60)  # Limiter le taux de rafraîchissement pour économiser les ressources
+                    pygame.time.Clock().tick(30)  # Limiter le taux de rafraîchissement pour économiser les ressources
 
         pygame.quit()
 
@@ -496,7 +495,7 @@ if __name__ == "__main__":
         
         game.accueil.afficher()
         #while game.accueil.en_cours():
-            #pygame.time.Clock().tick(60)  # Limiter le taux de rafraîchissement pour économiser les ressources
+            #pygame.time.Clock().tick(30)  # Limiter le taux de rafraîchissement pour économiser les ressources
         
         # Si le retour à l'accueil est demandé, arrêter la musique de fond
         if game.retour_accueil_demande:

@@ -1,3 +1,4 @@
+
 import pygame
 import random
 import numpy as np
@@ -202,30 +203,39 @@ class Grille:
 
                     if element == "P" and len(positions_alignement) >= 2:
                         self.placer_element("R", dernier_x, dernier_y)  # Remplacer l'alignement par un rocher
+                        game.score += 20  # Ajouter 20 points au score
 
                     elif element == "E" and len(positions_alignement) >= 3:
                         self.placer_element("Ba", dernier_x, dernier_y)  # Remplacer l'alignement par une basilique
+                        game.score += 3000  # Ajouter 3000 points au score
 
                     elif element == "H" and len(positions_alignement) >= 3:
                         self.placer_element("B", dernier_x, dernier_y)  # Remplacer l'alignement par un buisson
+                        game.score += 25  # Ajouter 25 points au score
 
                     elif element == "B" and len(positions_alignement) >= 3:
                         self.placer_element("A", dernier_x, dernier_y)  # Remplacer l'alignement par un arbre
+                        game.score += 30  # Ajouter 30 points au score
 
                     elif element == "A" and len(positions_alignement) >= 3:
                         self.placer_element("M", dernier_x, dernier_y)  # Remplacer l'alignement par une maison
+                        game.score += 600  # Ajouter 600 points au score
 
                     elif element == "M" and len(positions_alignement) >= 3:
                         self.placer_element("D", dernier_x, dernier_y)  # Remplacer l'alignement par une demeure
+                        game.score += 2000  # Ajouter 000 points au score
 
                     elif element == "D" and len(positions_alignement) >= 3:
                         self.placer_element("V", dernier_x, dernier_y)  # Remplacer l'alignement par une villa
+                        game.score += 3000  # Ajouter 3000 points au score
 
                     elif element == "V" and len(positions_alignement) >= 3:
                         self.placer_element("Ch", dernier_x, dernier_y)  # Remplacer l'alignement par un château
+                        game.score += 5000  # Ajouter 5000 points au score
 
                     elif element == "Ch" and len(positions_alignement) >= 3:
                         self.placer_element("En", dernier_x, dernier_y)  # Remplacer l'alignement par un château enchanté
+                        game.score += 10000  # Ajouter 10000 points au score
 
         pygame.display.flip()
 
@@ -327,6 +337,7 @@ class Game:
         self.piece_suivante = self.liste_items.pop(0)  # Première pièce que l'on prend et supprime
         self.pieces_placees = []  # Liste pour stocker les positions des pièces déjà placées
         self.compt = 0
+        self.score = 0  # Initialisation du score
 
         self.btn_retour = pygame.image.load("triple_town/img/retour.png")
         self.pos_retour = self.btn_retour.get_rect(topleft=(890, 20))  # On récupère l'emplacement (le rectangle rect) du btn retour
@@ -442,7 +453,9 @@ class Game:
                 self.screen.blit(surface_suivante, (930, 190))
                 
 
-            self.score(self.compt)
+            font = pygame.font.Font(None, 35)
+            score_text = font.render(f"Score: {self.score}", True, (255, 255, 0))
+            self.screen.blit(score_text, (775, 250))
 
             pygame.display.flip()
 

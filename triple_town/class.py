@@ -91,7 +91,7 @@ class Son:
 
     def lire_audio(self, nom_fichier):
         pygame.mixer.music.load(nom_fichier)
-        pygame.mixer.music.play(-1)
+        pygame.mixer.music.play()
 
     def fermer_audio(self, nom_fichier):
         pygame.mixer.music.stop()
@@ -124,11 +124,11 @@ class Grille:
         self.cases = []
         self.grille = np.full((taille_x, taille_y),None, dtype=object)
         self.panier = None
-        self.taille_case = 750 / taille_x
+        self.taille_case = 670 / taille_x
         for y in range(taille_y):  # nombre de lignes
             for x in range(taille_x):  # nombre de colonnes
-                case_x = x * self.taille_case
-                case_y = y * self.taille_case
+                case_x = x * self.taille_case + 25
+                case_y = y * self.taille_case + 25
                 case = ((case_x, case_y), (case_x + self.taille_case, case_y), (case_x + self.taille_case, case_y + self.taille_case),
                         (case_x, case_y + self.taille_case))
                 self.cases.append(case)
@@ -136,7 +136,7 @@ class Grille:
 
     def afficher(self):
         for i in range(len(self.cases)):
-            pygame.draw.polygon(self.screen, (0, 0, 0), self.cases[i], 2)
+            pygame.draw.polygon(self.screen, (101,130,69), self.cases[i], 2)
 
         # Parcourir la grille pour afficher les éléments
         for y in range(self.taille_y):
@@ -156,8 +156,8 @@ class Grille:
         for event in pygame.event.get():
             if event.type == pygame.MOUSEBUTTONDOWN:
                 position_souris = pygame.mouse.get_pos()
-                case_x = position_souris[0] // 50
-                case_y = position_souris[1] // 50
+                case_x = (position_souris[0] -25) // self.taille_case
+                case_y = (position_souris[1] -25) // self.taille_case
                 if case_x < 5.0:
                     print(f"Vous avez choisi la case ({case_x}, {case_y})")
 
@@ -336,7 +336,6 @@ class Game:
         self.liste_items = self.items.liste()  # On initialise la liste
         self.piece_suivante = self.liste_items.pop(0)  # Première pièce que l'on prend et supprime
         self.pieces_placees = []  # Liste pour stocker les positions des pièces déjà placées
-        self.compt = 0
         self.score = 0  # Initialisation du score
 
         self.btn_retour = pygame.image.load("triple_town/img/retour.png")
@@ -344,7 +343,7 @@ class Game:
         self.son = Son()  # Ajout du lecteur audio
         self.retour_accueil_demande = False  # Nouvelle variable pour suivre si le retour à l'écran d'accueil est demandé
 
-    def score(self, compt):
+    def afficher_score(self, compt):
 
         # Affichage du score courant
         font = pygame.font.Font(None, 35)
@@ -373,21 +372,20 @@ class Game:
                     mouse_pos = pygame.mouse.get_pos()
 
                     # Gestion des clics dans la zone grise
-                    if mouse_pos[0] > 750:  # zone score etc...
+                    if mouse_pos[0] > 670:  # zone score etc...
                         self.bouton_retour(mouse_pos)  # Gestion du clic sur le bouton "Retour"
 
                     # Gestion des clics dans la zone de jeu
                     else:
                         # On calcule les coordonnées de la case avec la position de la souris
-                        case_x = mouse_pos[0] // (750 / self.grille.taille_x)
-                        case_y = mouse_pos[1] // (750 / self.grille.taille_y)
+                        case_x = mouse_pos[0] // (670 / self.grille.taille_x)
+                        case_y = mouse_pos[1] // (670 / self.grille.taille_y)
                         # Vérifier si une pièce est déjà placée à cet emplacement
                         if (case_x, case_y) not in self.pieces_placees:
                             self.grille.placer_element(self.piece_suivante[0], int(case_x), int(case_y))  # Placer l'élément sur la grille
                             self.grille.afficher_grille_console()  # Ajouter la pièce dans la grille de la console
 
                             self.pieces_placees.append((case_x, case_y))  # Ajouter l'emplacement de la pièce à la liste des pièces placées
-                            self.compt += 1
                             if self.liste_items:
                                 self.piece_suivante = self.liste_items.pop(0)
                             else:
@@ -407,14 +405,8 @@ class Game:
                         self.grille.afficher()  # <-- Mettre à jour l'affichage de la grille dans la fenêtre graphique
             
 
-
-            fond_jeu = pygame.image.load("triple_town/img/fond.jpg")
-            fond_jeu_r = pygame.transform.scale(fond_jeu, (750, 750))
-            self.screen.blit(fond_jeu_r, (0, 0))
-
-            fond_score = pygame.image.load("triple_town/img/fond_score.png")
-            fond_score_r = pygame.transform.scale(fond_score, (736, 750))
-            self.screen.blit(fond_score_r, (750, 0))
+            fond_jeu = pygame.image.load("triple_town/img/fond.png")
+            self.screen.blit(fond_jeu, (0, 0))
 
             self.screen.blit(self.btn_retour, (890, 20))
 
@@ -446,16 +438,16 @@ class Game:
             if self.piece_suivante:
                 font = pygame.font.Font(None, 30)
                 texte_suivant = font.render("Pièce à placer :", True, (255, 255, 255))
-                self.screen.blit(texte_suivant, (775, 200))
+                self.screen.blit(texte_suivant, (800, 210))
 
                 surface_suivante = self.items.piece_initiales[self.piece_suivante]  # Surface de la pièce suivante
                 surface_suivante = pygame.transform.scale(surface_suivante, (35, 35))
-                self.screen.blit(surface_suivante, (930, 190))
+                self.screen.blit(surface_suivante, (950, 200))
                 
 
             font = pygame.font.Font(None, 35)
             score_text = font.render(f"Score: {self.score}", True, (255, 255, 0))
-            self.screen.blit(score_text, (775, 250))
+            self.screen.blit(score_text, (800, 250))
 
             pygame.display.flip()
 

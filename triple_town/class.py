@@ -1,4 +1,5 @@
 
+
 import pygame
 import random
 import numpy as np
@@ -91,7 +92,7 @@ class Son:
 
     def lire_audio(self, nom_fichier):
         pygame.mixer.music.load(nom_fichier)
-        pygame.mixer.music.play()
+        pygame.mixer.music.play(-1)
 
     def fermer_audio(self, nom_fichier):
         pygame.mixer.music.stop()
@@ -282,6 +283,14 @@ class Grille:
             return self.chateaumagique
         else:
             return None
+        
+
+    def toutes_les_cases_occupees(self):
+        for y in range(self.taille_y):
+            for x in range(self.taille_x):
+                if (x, y) != (0, 0) and self.grille[x, y] is None:
+                    return False
+        return True
 
 
 
@@ -342,6 +351,8 @@ class Game:
         self.pos_retour = self.btn_retour.get_rect(topleft=(890, 20))  # On récupère l'emplacement (le rectangle rect) du btn retour
         self.son = Son()  # Ajout du lecteur audio
         self.retour_accueil_demande = False  # Nouvelle variable pour suivre si le retour à l'écran d'accueil est demandé
+        self.game_over = False  # Variable pour suivre l'état du jeu
+
 
     def afficher_score(self, compt):
 
@@ -353,6 +364,14 @@ class Game:
     def bouton_retour(self, mouse_pos):
         if self.pos_retour.collidepoint(mouse_pos):
             self.retour_accueil_demande = True  # Définir la variable à True lorsque le bouton "Retour" est cliqué
+    
+    
+    def afficher_game_over(self):
+        font = pygame.font.Font(None, 74)
+        game_over_text = font.render("Game Over", True, (255, 0, 0))
+        self.screen.blit(game_over_text, (350, 375))
+        pygame.display.flip()
+        pygame.time.wait(3000)  # Attendre 3 secondes avant de fermer le jeu
 
     def jeu(self):
         self.son.lire_audio("triple_town/sounds/aventure.mp3")
@@ -390,6 +409,10 @@ class Game:
                                 self.piece_suivante = self.liste_items.pop(0)
                             else:
                                 self.piece_suivante = None
+
+                            if self.grille.toutes_les_cases_occupees():
+                                self.afficher_game_over()
+                                self.running = False
 
 
             # SUPPRIMER ALIGNEMENT 

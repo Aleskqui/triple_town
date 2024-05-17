@@ -91,7 +91,7 @@ class Son:
 
     def lire_audio(self, nom_fichier):
         pygame.mixer.music.load(nom_fichier)
-        pygame.mixer.music.play()
+        pygame.mixer.music.play(-1)
 
     def fermer_audio(self, nom_fichier):
         pygame.mixer.music.stop()

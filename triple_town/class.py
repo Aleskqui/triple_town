@@ -318,7 +318,7 @@ class Items:
         }
  
 
-    def liste(self, repetitions=10):
+    def liste(self, repetitions=100):
         self.liste_items = ["P", "R", "E", "H", "A"]  # Exemple avec seulement deux pièces
         self.liste_items *= repetitions
         random.shuffle(self.liste_items)

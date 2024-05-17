@@ -1,5 +1,6 @@
 
 
+
 import pygame
 import random
 import numpy as np
@@ -73,7 +74,7 @@ class Accueil:
 
                 # On vérifie si le btn site web est cliqué
                 elif self.pos_site.collidepoint(mouse_pos):
-                    webbrowser.open("file:///C:/Users/guill/OneDrive/Documents/site/index.html")  # On ouvre notre site web (lien à changer en fonction de la machine)
+                    webbrowser.open("https://leria-etud.univ-angers.fr/~ggascoin/projet/site/")  # On ouvre notre site web (lien à changer en fonction de la machine)
 
                 elif self.pos_retour.collidepoint(mouse_pos):
                     self.afficher()

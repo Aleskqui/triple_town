@@ -172,19 +172,38 @@ class Grille:
 
     # Vérifie s'il y a un alignement de 3 éléments identiques (horizontalement ou verticalement) à partir de la position (x, y).
     # Elle renvoie les positions des éléments alignés s'il y a un alignement de 3, sinon renvoie None.
+
     def verifier_alignement(self, x, y):
-        # Vérifier l'alignement horizontal
-        if x + 2 < self.taille_x and self.grille[x, y] == self.grille[x + 1, y] == self.grille[x + 2, y]:
-            return [(x, y), (x + 1, y), (x + 2, y)]
-        # Vérifier l'alignement vertical
-        if y + 2 < self.taille_y and self.grille[x, y] == self.grille[x, y + 1] == self.grille[x, y + 2]:
-            return [(x, y), (x, y + 1), (x, y + 2)]
-        # Vérifier l'alignement diagonal (descendant)
-        if x + 2 < self.taille_x and y + 2 < self.taille_y and self.grille[x, y] == self.grille[x + 1, y + 1] == self.grille[x + 2, y + 2]:
-            return [(x, y), (x + 1, y + 1), (x + 2, y + 2)]
-        # Vérifier l'alignement diagonal (ascendant)
-        if x + 2 < self.taille_x and y - 2 >= 0 and self.grille[x, y] == self.grille[x + 1, y - 1] == self.grille[x + 2, y - 2]:
-            return [(x, y), (x + 1, y - 1), (x + 2, y - 2)]
+
+        # Liste de toutes les directions
+        coordonnées = [
+            # Aligement de base
+            [(0, 0), (0, 1), (0, 2)],   # Horizontal
+            [(0, 0), (1, 0), (2, 0)],     # Veritcal
+            [(0, 0), (1, 1), (2, 2)],    # Diagonale descendante
+            [(0, 0), (1, -1), (2, -2)],      # diagonal ascendante
+        
+            # Alignements en L
+            [(0, 0), (0, 1), (1, 0)],   # L1
+            [(0, 0), (0, 1), (-1, 0)],   # L2
+            [(0, 0), (-1, 0), (0, -1)],  # L3
+            [(0, 0), (1, 0), (0, -1)]  # L4
+        ]
+        
+        for directions in coordonnées:
+            positions = []
+            alignement = True
+            for abcisses, ordonnées in directions:
+                nouveau_x, nouveau_y = x + abcisses, y + ordonnées
+
+                # on vérifie si le nouvel abcsice est >0 et est dans la grille (idem pour l'ordonné)  ET que l'élément à cette position est bien celui de la pos initial
+                if 0 <= nouveau_x < self.taille_x and 0 <= nouveau_y < self.taille_y and self.grille[nouveau_x, nouveau_y] == self.grille[x, y]:
+                    positions.append((nouveau_x, nouveau_y))
+                else:
+                    alignement = False
+            if alignement:
+                return positions
+            
         return None
 
     # Méthode pour supprimer les éléments de la grille à partir des positions spécifiées
@@ -272,9 +291,9 @@ class Grille:
             return self.buisson
         elif element == "A":
             return self.arbre
-        elif element == "C":
-            return self.cabane
         elif element == "M":
+            return self.cabane
+        elif element == "D":
             return self.maison
         elif element == "V":
             return self.villa

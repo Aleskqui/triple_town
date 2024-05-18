@@ -376,13 +376,14 @@ class Game:
 
 
     def afficher_score(self, compt):
-        font = pygame.font.Font(None, 35)
-        score_text = font.render(f"Score: {compt}", True, (255, 255, 0))
-        self.screen.blit(score_text, (775, 250))
+        font1 = pygame.font.Font(None, 35)
+        score_text = font1.render(f"{compt}", True, (108, 135, 76))
+        self.screen.blit(score_text, (890, 257))
     
         # Affichage du record
-        record_text = font.render(f"Record: {self.record}", True, (255, 255, 0))
-        self.screen.blit(record_text, (775, 290))
+        font2 = pygame.font.Font(None, 23)
+        record_text = font2.render(f"{self.record}", True, (108, 135, 76))
+        self.screen.blit(record_text, (889, 296))
 
     def bouton_retour(self, mouse_pos):
         if self.pos_retour.collidepoint(mouse_pos):
@@ -503,13 +504,10 @@ class Game:
 
 
             if self.piece_suivante:
-                font = pygame.font.Font(None, 30)
-                texte_suivant = font.render("Pièce à placer :", True, (255, 255, 255))
-                self.screen.blit(texte_suivant, (800, 210))
 
                 surface_suivante = self.items.piece_initiales[self.piece_suivante]  # Surface de la pièce suivante
                 surface_suivante = pygame.transform.scale(surface_suivante, (35, 35))
-                self.screen.blit(surface_suivante, (950, 200))
+                self.screen.blit(surface_suivante, (955, 205))
 
             self.afficher_score(self.score)  # Afficher le score et le record
                 
@@ -539,12 +537,13 @@ if __name__ == "__main__":
         game.screen.fill((0, 0, 0))  # Remplir l'écran avec une couleur noire
         
         game.accueil.afficher()
-        #while game.accueil.en_cours():
-            #pygame.time.Clock().tick(60)  # Limiter le taux de rafraîchissement pour économiser les ressources
+        while game.accueil.en_cours():
+            pygame.time.Clock().tick(60)  # Limiter le taux de rafraîchissement pour économiser les ressources
         
         # Si le retour à l'accueil est demandé, arrêter la musique de fond
         if game.retour_accueil_demande:
             game.son.fermer_audio("triple_town/sounds/aventure.mp3")  
             game.retour_accueil_demande = False  # Réinitialiser la variable après le retour à l'accueil
-        
+        game.afficher_game_over()
         game.jeu()  # Lancer le jeu
+        

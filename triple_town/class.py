@@ -353,25 +353,43 @@ class Game:
         self.son = Son()  # Ajout du lecteur audio
         self.retour_accueil_demande = False  # Nouvelle variable pour suivre si le retour à l'écran d'accueil est demandé
         self.game_over = False  # Variable pour suivre l'état du jeu
+        self.record = 0  # Initialisation du record
 
 
     def afficher_score(self, compt):
-
-        # Affichage du score courant
         font = pygame.font.Font(None, 35)
         score_text = font.render(f"Score: {compt}", True, (255, 255, 0))
         self.screen.blit(score_text, (775, 250))
+    
+        # Affichage du record
+        record_text = font.render(f"Record: {self.record}", True, (255, 255, 0))
+        self.screen.blit(record_text, (775, 290))
 
     def bouton_retour(self, mouse_pos):
         if self.pos_retour.collidepoint(mouse_pos):
             self.retour_accueil_demande = True  # Définir la variable à True lorsque le bouton "Retour" est cliqué
     
+
+    def reinitialiser(self):
+        self.grille = Grille(5, 5)
+        self.score = 0
+        self.game_over = False
     
     def afficher_game_over(self):
         game_over = pygame.image.load("triple_town/img/gameover.png")
         self.screen.blit(game_over, (180, 200))
+    
+        # Affichage du score final
+        font = pygame.font.Font(None, 50)
+        final_score_text = font.render(f"Score final: {self.score}", True, (255, 0, 0))
+        self.screen.blit(final_score_text, (300, 400))
+
+        # Affichage du record
+        record_text = font.render(f"Record: {self.record}", True, (255, 255, 0))
+        self.screen.blit(record_text, (300, 450))
+
         pygame.display.flip()
-        pygame.time.wait(5000)  # Attendre 3 secondes avant de fermer le jeu
+        pygame.time.wait(5000)  # Attendre 5 secondes avant de fermer le jeu
 
     def jeu(self):
         self.son.lire_audio("triple_town/sounds/aventure.mp3")
@@ -413,6 +431,13 @@ class Game:
                             if self.grille.toutes_les_cases_occupees():
                                 self.afficher_game_over()
                                 #self.running = False
+                                self.reinitialiser()
+                                self.jeu()
+
+
+                            if self.score > self.record:
+                                self.record = self.score
+                                print(f"Nouveau record : {self.record}")  # Pour vérifier dans la console
 
 
             # SUPPRIMER ALIGNEMENT 
@@ -466,11 +491,11 @@ class Game:
                 surface_suivante = self.items.piece_initiales[self.piece_suivante]  # Surface de la pièce suivante
                 surface_suivante = pygame.transform.scale(surface_suivante, (35, 35))
                 self.screen.blit(surface_suivante, (950, 200))
+
+            self.afficher_score(self.score)  # Afficher le score et le record
                 
 
-            font = pygame.font.Font(None, 35)
-            score_text = font.render(f"Score: {self.score}", True, (255, 255, 0))
-            self.screen.blit(score_text, (800, 250))
+            
 
             pygame.display.flip()
 

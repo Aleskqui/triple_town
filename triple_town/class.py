@@ -544,6 +544,5 @@ if __name__ == "__main__":
         if game.retour_accueil_demande:
             game.son.fermer_audio("triple_town/sounds/aventure.mp3")  
             game.retour_accueil_demande = False  # Réinitialiser la variable après le retour à l'accueil
-        game.afficher_game_over()
         game.jeu()  # Lancer le jeu
         

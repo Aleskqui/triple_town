@@ -479,7 +479,7 @@ class Game:
                 self.son.fermer_audio("triple_town/sounds/aventure.mp3")  # Arrêter la musique de fond
                 self.accueil.afficher()  # Revenir à l'écran d'accueil
                 while self.accueil.en_cours():
-                    pygame.time.Clock().tick(30)  # Limiter le taux de rafraîchissement pour économiser les ressources
+                    pygame.time.Clock().tick(60)  # Limiter le taux de rafraîchissement pour économiser les ressources
 
         pygame.quit()
 
@@ -496,7 +496,7 @@ if __name__ == "__main__":
         
         game.accueil.afficher()
         #while game.accueil.en_cours():
-            #pygame.time.Clock().tick(30)  # Limiter le taux de rafraîchissement pour économiser les ressources
+            #pygame.time.Clock().tick(60)  # Limiter le taux de rafraîchissement pour économiser les ressources
         
         # Si le retour à l'accueil est demandé, arrêter la musique de fond
         if game.retour_accueil_demande:

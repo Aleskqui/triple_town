@@ -98,6 +98,10 @@ class Son:
     def fermer_audio(self, nom_fichier):
         pygame.mixer.music.stop()
 
+    def lire_effet(self, nom_fichier):
+        effet = pygame.mixer.Sound(nom_fichier)
+        effet.play()
+
 
 # ==================================================================================================================
 # ===============================================     GRILLE     ===================================================
@@ -127,6 +131,7 @@ class Grille:
         self.grille = np.full((taille_x, taille_y),None, dtype=object)
         self.panier = None
         self.taille_case = 670 / taille_x
+        self.son = Son()  # Ajout du lecteur audio pour les effets sonores
         for y in range(taille_y):  # nombre de lignes
             for x in range(taille_x):  # nombre de colonnes
                 case_x = x * self.taille_case + 25
@@ -224,22 +229,27 @@ class Grille:
 
                     if element == "P" and len(positions_alignement) >= 2:
                         self.placer_element("R", dernier_x, dernier_y)  # Remplacer l'alignement par un rocher
+                        self.son.lire_effet("triple_town/sounds/pierre.mp3")
                         game.score += 20  # Ajouter 20 points au score
 
                     elif element == "E" and len(positions_alignement) >= 3:
                         self.placer_element("Ba", dernier_x, dernier_y)  # Remplacer l'alignement par une basilique
+                        self.son.lire_effet("triple_town/sounds/eglise.mp3")
                         game.score += 3000  # Ajouter 3000 points au score
 
                     elif element == "H" and len(positions_alignement) >= 3:
                         self.placer_element("B", dernier_x, dernier_y)  # Remplacer l'alignement par un buisson
+                        self.son.lire_effet("triple_town/sounds/herbe.mp3")
                         game.score += 25  # Ajouter 25 points au score
 
                     elif element == "B" and len(positions_alignement) >= 3:
                         self.placer_element("A", dernier_x, dernier_y)  # Remplacer l'alignement par un arbre
+                        self.son.lire_effet("triple_town/sounds/branches.mp3")
                         game.score += 30  # Ajouter 30 points au score
 
                     elif element == "A" and len(positions_alignement) >= 3:
                         self.placer_element("M", dernier_x, dernier_y)  # Remplacer l'alignement par une maison
+                        self.son.lire_effet("triple_town/sounds/arbre.mp3")
                         game.score += 600  # Ajouter 600 points au score
 
                     elif element == "M" and len(positions_alignement) >= 3:
@@ -248,14 +258,17 @@ class Grille:
 
                     elif element == "D" and len(positions_alignement) >= 3:
                         self.placer_element("V", dernier_x, dernier_y)  # Remplacer l'alignement par une villa
+                        self.son.lire_effet("triple_town/sounds/villa.mp3")
                         game.score += 3000  # Ajouter 3000 points au score
 
                     elif element == "V" and len(positions_alignement) >= 3:
                         self.placer_element("Ch", dernier_x, dernier_y)  # Remplacer l'alignement par un château
+                        self.son.lire_effet("triple_town/sounds/chateau.mp3")
                         game.score += 5000  # Ajouter 5000 points au score
 
                     elif element == "Ch" and len(positions_alignement) >= 3:
                         self.placer_element("En", dernier_x, dernier_y)  # Remplacer l'alignement par un château enchanté
+                        self.son.lire_effet("triple_town/sounds/enchante.mp3")
                         game.score += 10000  # Ajouter 10000 points au score
 
         pygame.display.flip()
@@ -338,13 +351,14 @@ class Items:
  
 
     def liste(self, repetitions=100):
-        self.liste_items = ["P", "R", "E", "H", "A"]  # Exemple avec seulement deux pièces
-        self.liste_items *= repetitions
-        random.shuffle(self.liste_items)
-        return self.liste_items
+         while True:
+            items = ["P", "R", "E", "H", "A"]  # Exemple avec seulement cinq pièces
+            random.shuffle(items)
+            for item in items:
+                yield item
 
     def suivant(self):
-        return self.liste_items[0]
+        return next(self.liste_items)
 
 
 
@@ -363,7 +377,7 @@ class Game:
         self.items = Items()
 
         self.liste_items = self.items.liste()  # On initialise la liste
-        self.piece_suivante = self.liste_items.pop(0)  # Première pièce que l'on prend et supprime
+        self.piece_suivante = self.suivant()  # Première pièce que l'on prend  # Première pièce que l'on prend et supprime
         self.pieces_placees = []  # Liste pour stocker les positions des pièces déjà placées
         self.score = 0  # Initialisation du score
 
@@ -411,6 +425,9 @@ class Game:
         pygame.display.flip()
         pygame.time.wait(5000)  # Attendre 5 secondes avant de fermer le jeu
 
+    def suivant(self):
+        return next(self.liste_items)
+
     def jeu(self):
         self.son.lire_audio("triple_town/sounds/aventure.mp3")
 
@@ -439,14 +456,11 @@ class Game:
                         case_y = mouse_pos[1] // (670 / self.grille.taille_y)
                         # Vérifier si une pièce est déjà placée à cet emplacement
                         if (case_x, case_y) not in self.pieces_placees:
-                            self.grille.placer_element(self.piece_suivante[0], int(case_x), int(case_y))  # Placer l'élément sur la grille
+                            self.grille.placer_element(self.piece_suivante, int(case_x), int(case_y))  # Placer l'élément sur la grille
                             self.grille.afficher_grille_console()  # Ajouter la pièce dans la grille de la console
 
                             self.pieces_placees.append((case_x, case_y))  # Ajouter l'emplacement de la pièce à la liste des pièces placées
-                            if self.liste_items:
-                                self.piece_suivante = self.liste_items.pop(0)
-                            else:
-                                self.piece_suivante = None
+                            self.piece_suivante = self.suivant()
 
                             if self.grille.toutes_les_cases_occupees():
                                 self.afficher_game_over()

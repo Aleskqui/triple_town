@@ -429,7 +429,7 @@ class Game:
         return next(self.liste_items)
 
     def jeu(self):
-        self.son.lire_audio("triple_town/sounds/aventure.mp3")
+        self.son.lire_audio("triple_town/sounds/main.mp3")
 
         self.accueil = Accueil()
 
@@ -532,7 +532,7 @@ class Game:
 
             if self.retour_accueil_demande:
                 self.retour_accueil_demande = False  # Réinitialiser la variable après le retour à l'accueil
-                self.son.fermer_audio("triple_town/sounds/aventure.mp3")  # Arrêter la musique de fond
+                self.son.fermer_audio("triple_town/sounds/main.mp3")  # Arrêter la musique de fond
                 self.accueil.afficher()  # Revenir à l'écran d'accueil
                 while self.accueil.en_cours():
                     pygame.time.Clock().tick(60)  # Limiter le taux de rafraîchissement pour économiser les ressources
@@ -556,7 +556,7 @@ if __name__ == "__main__":
         
         # Si le retour à l'accueil est demandé, arrêter la musique de fond
         if game.retour_accueil_demande:
-            game.son.fermer_audio("triple_town/sounds/aventure.mp3")  
+            game.son.fermer_audio("triple_town/sounds/main.mp3")  
             game.retour_accueil_demande = False  # Réinitialiser la variable après le retour à l'accueil
         game.jeu()  # Lancer le jeu
         

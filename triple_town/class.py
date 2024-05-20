@@ -324,6 +324,9 @@ class Grille:
                 if (x, y) != (0, 0) and self.grille[x, y] is None:
                     return False
         return True
+    
+
+
 
 
 
@@ -559,4 +562,4 @@ if __name__ == "__main__":
             game.son.fermer_audio("triple_town/sounds/main.mp3")  
             game.retour_accueil_demande = False  # Réinitialiser la variable après le retour à l'accueil
         game.jeu()  # Lancer le jeu
-        
+        ''

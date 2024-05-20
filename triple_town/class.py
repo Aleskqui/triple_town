@@ -90,6 +90,8 @@ class Accueil:
 class Son:
     def __init__(self):
         pygame.mixer.init()
+        self.volume = 0.5  # Initial volume (50%)
+        pygame.mixer.music.set_volume(self.volume)
 
     def lire_audio(self, nom_fichier):
         pygame.mixer.music.load(nom_fichier)
@@ -101,6 +103,10 @@ class Son:
     def lire_effet(self, nom_fichier):
         effet = pygame.mixer.Sound(nom_fichier)
         effet.play()
+
+    def ajuster_volume(self, increment):
+        self.volume = max(0, min(1, self.volume + increment))  # Adjust volume between 0 and 1
+        pygame.mixer.music.set_volume(self.volume)
 
 
 # ==================================================================================================================
@@ -325,6 +331,22 @@ class Grille:
                     return False
         return True
     
+    def placer_dans_panier(self, element):
+            if self.panier is None:
+                self.panier = element
+            else:
+                self.panier, element = element, self.panier
+
+    def echanger_avec_panier(self):
+        if self.panier is not None:
+            x, y = self.derniere_position_cliquee
+            element_case_cliquee = self.grille[x, y]  # Sauvegarde de l'élément de la case cliquée
+            self.grille[x, y] = self.panier  # Mettre la pièce du panier dans la case cliquée
+            self.panier = element_case_cliquee  # Mettre la pièce de la case cliquée dans le panier
+
+    def placer_element_dans_case_00(self):
+        if self.panier is not None:
+            self.placer_element(self.panier, 0, 0)  # Place l'élément du panier en case (0,0)
 
 
 
@@ -457,24 +479,33 @@ class Game:
                         # On calcule les coordonnées de la case avec la position de la souris
                         case_x = mouse_pos[0] // (670 / self.grille.taille_x)
                         case_y = mouse_pos[1] // (670 / self.grille.taille_y)
-                        # Vérifier si une pièce est déjà placée à cet emplacement
-                        if (case_x, case_y) not in self.pieces_placees:
-                            self.grille.placer_element(self.piece_suivante, int(case_x), int(case_y))  # Placer l'élément sur la grille
-                            self.grille.afficher_grille_console()  # Ajouter la pièce dans la grille de la console
+                        if event.button == 1:  # Clic gauche
+                            if (case_x, case_y) not in self.pieces_placees:
+                                self.grille.placer_element(self.piece_suivante, int(case_x), int(case_y))
+                                self.grille.afficher_grille_console()
+                                self.pieces_placees.append((case_x, case_y))
+                                self.piece_suivante = self.suivant()
 
-                            self.pieces_placees.append((case_x, case_y))  # Ajouter l'emplacement de la pièce à la liste des pièces placées
-                            self.piece_suivante = self.suivant()
+                                if self.grille.toutes_les_cases_occupees():
+                                    self.afficher_game_over()
+                                    self.reinitialiser()
+                                    self.jeu()
 
-                            if self.grille.toutes_les_cases_occupees():
-                                self.afficher_game_over()
-                                #self.running = False
-                                self.reinitialiser()
-                                self.jeu()
+                                if self.score > self.record:
+                                    self.record = self.score
+                                    print(f"Nouveau record : {self.record}")
 
-
-                            if self.score > self.record:
-                                self.record = self.score
-                                print(f"Nouveau record : {self.record}")  # Pour vérifier dans la console
+                        elif event.button == 3:  # Clic droit
+                           if self.grille.panier is None:
+                                self.grille.placer_dans_panier(self.piece_suivante)
+                                self.grille.placer_element_dans_case_00()
+                                self.piece_suivante = self.suivant()  # Nouvelle pièce suivante
+                           else:
+                                # Échanger la pièce actuelle avec celle dans le panier
+                                self.grille.echanger_avec_panier()
+                                self.grille.placer_dans_panier(self.piece_suivante)
+                                self.grille.placer_element_dans_case_00()
+                                self.piece_suivante = self.suivant()  # Nouvelle pièce suivante
 
 
             # SUPPRIMER ALIGNEMENT 

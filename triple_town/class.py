@@ -117,6 +117,7 @@ class Son:
 class Grille:
     def __init__(self, taille_x, taille_y):
 
+        self.tombe = pygame.image.load("triple_town/img/tombe.png").convert_alpha()
         self.pierre = pygame.image.load("triple_town/img/pierre.png").convert_alpha()
         self.rocher = pygame.image.load("triple_town/img/rocher.png").convert_alpha()
         self.eglise = pygame.image.load("triple_town/img/eglise.png").convert_alpha()
@@ -129,6 +130,9 @@ class Grille:
         self.villa = pygame.image.load("triple_town/img/villa.png").convert_alpha()
         self.chateau = pygame.image.load("triple_town/img/chateau.png").convert_alpha()
         self.chateaumagique = pygame.image.load("triple_town/img/chateaumagique.png").convert_alpha()
+
+        self.ours = pygame.image.load("triple_town/img/ours.png").convert_alpha()
+        self.ours_positions = []  # Liste pour stocker les positions des ours
     
         self.taille_x = taille_x
         self.taille_y = taille_y
@@ -148,8 +152,10 @@ class Grille:
         self.derniere_position_cliquee = (0, 0)  # Initialisation de la dernière position cliquée
 
     def afficher(self):
-        for i in range(len(self.cases)):
+        for i in range(2, len(self.cases)):
             pygame.draw.polygon(self.screen, (101,130,69), self.cases[i], 2)
+
+        
 
         # Parcourir la grille pour afficher les éléments
         for y in range(self.taille_y):
@@ -279,6 +285,33 @@ class Grille:
 
         pygame.display.flip()
 
+    def deplacer_ours(self):
+        for y in range(self.taille_y):
+            for x in range(self.taille_x):
+                if self.grille[x, y] == "O":  # si l'élément est un ours
+                    mouvement_possible = []  # on stockera tout dans une liste
+
+                    # Vérifier les déplacements possibles (gauche, droite, haut, bas)
+                    if x > 0 and self.grille[x - 1, y] is None:
+                        mouvement_possible.append((-1, 0))  # pour allr vers la gauche
+                    if x < self.taille_x - 1 and self.grille[x + 1, y] is None:
+                        mouvement_possible.append((1, 0))   # pour aller vers la droite
+                    if y > 0 and self.grille[x, y - 1] is None:
+                        mouvement_possible.append((0, -1))  # pour aller vers le haut
+                    if y < self.taille_y - 1 and self.grille[x, y + 1] is None:
+                        mouvement_possible.append((0, 1))   # pour aller vers le bas
+
+                    if mouvement_possible:  # S'il y a des déplacements possibles
+                        direction = random.choice(mouvement_possible)  # On choisi aléatoirement une direction
+                        dir_x = x + direction[0]
+                        dir_y = y + direction[1]
+                        self.grille[x, y] = None  # On efface l'ancienne position de l'iamge
+                        self.grille[dir_x, dir_y] = "O"  # On la met à une nouvelle place
+
+                    else : # si il ny a pas de deplacement possible :
+                        self.grille[x, y] = "T" # on remplace l'ours par une tombe
+
+
     def afficher_grille_console(self):
         # Affiche la grille dans la console
         for y in range(self.taille_y):
@@ -291,9 +324,7 @@ class Grille:
                     ligne += str(element) + " "
             print(ligne)
 
-        if self.panier is not None:
-            print(f"Panier: {self.panier}")
-
+        self.deplacer_ours()
     
     def get_image_element(self, element):
         if element == "P":
@@ -320,6 +351,10 @@ class Grille:
             return self.chateau
         elif element == "ChM":
             return self.chateaumagique
+        elif element == "O":
+            return self.ours
+        elif element == "T":
+            return self.tombe
         else:
             return None
         
@@ -371,13 +406,14 @@ class Items:
             "E": pygame.image.load("triple_town/img/eglise.png").convert_alpha(),
             "H": pygame.image.load("triple_town/img/herbe.png").convert_alpha(),
             "B": pygame.image.load("triple_town/img/buisson.png").convert_alpha(),
-            "A": pygame.image.load("triple_town/img/arbre.png").convert_alpha()
+            "A": pygame.image.load("triple_town/img/arbre.png").convert_alpha(),
+            "O": pygame.image.load("triple_town/img/ours.png").convert_alpha()
         }
  
 
     def liste(self, repetitions=100):
          while True:
-            items = ["P", "R", "E", "H", "A"]  # Exemple avec seulement cinq pièces
+            items = ["P", "R", "E", "H", "A", "O"]  # Exemple avec seulement cinq pièces
             random.shuffle(items)
             for item in items:
                 yield item

@@ -244,6 +244,11 @@ class Grille:
                         self.son.lire_effet("triple_town/sounds/pierre.mp3")
                         game.score += 20  # Ajouter 20 points au score
 
+                    elif element == "T" and len(positions_alignement) >= 3:
+                        self.placer_element("E", dernier_x, dernier_y)  # Remplacer l'alignement par une basilique
+                        self.son.lire_effet("triple_town/sounds/eglise.mp3")
+                        game.score += 3000  # Ajouter 3000 points au score
+
                     elif element == "E" and len(positions_alignement) >= 3:
                         self.placer_element("Ba", dernier_x, dernier_y)  # Remplacer l'alignement par une basilique
                         self.son.lire_effet("triple_town/sounds/eglise.mp3")

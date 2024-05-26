@@ -15,36 +15,51 @@ main{
     flex-direction: column;
     justify-content: space-around;
     align-items: center;
-    margin-top: 2%;
     font-family: "DM Sans", sans-serif;
+    width: 70%;
+    margin: 0 auto;
+    border-radius: 25% 20% 25% 20%;
+    background-color: #4fc7f3;
 }
 
 main div{
-    margin: 15px;
+    margin-left: 50px;
+    margin: 10px;
     padding: 20px;
-    border-radius: 10px;
+    border-radius: 20px 20px 0px 20px;
+    border: #374034 1px solid;
 }
 
 main div:nth-child(2n){
-    background-color: #c7684c;
-    color: #e4bea4;
+    background-color: #658245;
+    color: #374034;
+
+    
 }
 
 main div:nth-child(2n+1){
-    background-color: #809670;
+    background-color: #7ea356;
     color: #374034;
+    
+
 }
 
 main h1{
     letter-spacing: 3px;
     font-size: 100px;
-    color: #c7684c;
-    text-shadow: 5px 5px 0px #e4bea4;
+    color: #15aae2;
+    text-shadow: 0px 0px 3px white;
 }
 
 main section{
-    width: 60%;
+    width: 90%;
+    margin: 25px;
     line-height: 30px;
+    background-color:#dfb87f;
+    border-radius: 20% 20% 20% 20%;
+    border: white 10px solid;
+    padding: 100px;
+
 }
 
 

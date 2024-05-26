@@ -298,13 +298,13 @@ class Grille:
                     mouvement_possible = []  # on stockera tout dans une liste
 
                     # Vérifier les déplacements possibles (gauche, droite, haut, bas)
-                    if x > 0 and self.grille[x - 1, y] is None:
+                    if x > 0 and self.grille[x - 1, y] is None and (x - 1, y) != (0, 0):
                         mouvement_possible.append((-1, 0))  # pour allr vers la gauche
-                    if x < self.taille_x - 1 and self.grille[x + 1, y] is None:
+                    if x < self.taille_x - 1 and self.grille[x + 1, y] is None and (x + 1, y) != (0, 0):
                         mouvement_possible.append((1, 0))   # pour aller vers la droite
-                    if y > 0 and self.grille[x, y - 1] is None:
+                    if y > 0 and self.grille[x, y - 1] is None and (x, y - 1) != (0, 0):
                         mouvement_possible.append((0, -1))  # pour aller vers le haut
-                    if y < self.taille_y - 1 and self.grille[x, y + 1] is None:
+                    if y < self.taille_y - 1 and self.grille[x, y + 1] is None and (x, y + 1) != (0, 0):
                         mouvement_possible.append((0, 1))   # pour aller vers le bas
 
                     if mouvement_possible:  # S'il y a des déplacements possibles

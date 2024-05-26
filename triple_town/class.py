@@ -1,6 +1,7 @@
 
 
 
+
 import pygame
 import random
 import numpy as np
@@ -453,6 +454,8 @@ class Game:
         self.retour_accueil_demande = False  # Nouvelle variable pour suivre si le retour à l'écran d'accueil est demandé
         self.game_over = False  # Variable pour suivre l'état du jeu
         self.record = 0  # Initialisation du record
+        self.panier_aux=None
+        self.panier = None  # Initialisation du panier
 
 
     def afficher_score(self, compt):
@@ -493,6 +496,12 @@ class Game:
 
     def suivant(self):
         return next(self.liste_items)
+    
+
+    def afficher_panier(self):
+        if self.panier is not None:
+            image_panier = self.items.piece_initiales[self.panier]
+            self.screen.blit(image_panier, (900, 500))  # Position du panier sur l'écran
 
     def jeu(self):
         self.son.lire_audio("triple_town/sounds/main.mp3")
@@ -538,15 +547,17 @@ class Game:
 
                         elif event.button == 3:  # Clic droit
                            if self.grille.panier is None:
-                                self.grille.placer_dans_panier(self.piece_suivante)
+                                self.panier=self.piece_suivante
+                                self.grille.placer_dans_panier(self.panier)
                                 self.grille.placer_element_dans_case_00()
                                 self.piece_suivante = self.suivant()  # Nouvelle pièce suivante
                            else:
                                 # Échanger la pièce actuelle avec celle dans le panier
-                                self.grille.echanger_avec_panier()
-                                self.grille.placer_dans_panier(self.piece_suivante)
+                                self.panier_aux=self.panier
+                                self.panier=self.piece_suivante
+                                self.grille.placer_dans_panier(self.panier)
                                 self.grille.placer_element_dans_case_00()
-                                self.piece_suivante = self.suivant()  # Nouvelle pièce suivante
+                                self.piece_suivante = self.panier_aux  # Nouvelle pièce suivante
 
 
             # SUPPRIMER ALIGNEMENT 
